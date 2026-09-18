@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semiconductor MCQ Game · 300 questions · Image Rain</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    body {
+      background: linear-gradient(145deg, #eef4fa 0%, #dae6f2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      overflow-x: hidden;
+    }
+    .game-container {
+      max-width: 1000px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(4px);
+      border-radius: 42px;
+      padding: 2rem 1.8rem 2.2rem;
+      box-shadow: 0 25px 40px -12px rgba(0, 30, 60, 0.35), inset 0 1px 4px rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      position: relative;
+      z-index: 2;
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.8rem;
+    }
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0b2f4b, #1f5f84);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .score-area {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      background: white;
+      padding: 0.7rem 1.3rem;
+      border-radius: 60px;
+      box-shadow: 0 4px 12px rgba(0, 20, 30, 0.08);
+      border: 1px solid #cdddee;
+    }
+    .score-badge {
+      font-weight: 600;
+      color: #1e4a6b;
+      font-size: 1rem;
+      background: #e4eef9;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+    }
+    .score-badge span {
+      color: #0a3146;
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-left: 6px;
+    }
+    .reset-btn {
+      background: #1f5f84;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.6rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 4px 8px rgba(20, 80, 130, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .reset-btn:hover {
+      background: #0e4160;
+      transform: scale(1.02);
+    }
+    .progress-info {
+      background: white;
+      padding: 0.8rem 1.2rem;
+      border-radius: 50px;
+      margin-bottom: 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      color: #0e3d59;
+      border: 1px solid #bfd7ec;
+      box-shadow: inset 0 1px 4px #ffffff, 0 2px 6px rgba(0,0,0,0.02);
+      font-size: 1.05rem;
+    }
+    .progress-info span {
+      background: #d2e2f2;
+      padding: 0.2rem 1.1rem;
+      border-radius: 30px;
+    }
+    .question-card {
+      background: white;
+      border-radius: 32px;
+      padding: 2rem 2rem 1.8rem;
+      box-shadow: 0 12px 28px -8px rgba(0, 40, 70, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.7);
+      margin-bottom: 1.5rem;
+    }
+    .q-text {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #0b2a40;
+      margin-bottom: 1.8rem;
+      line-height: 1.45;
+      display: flex;
+      gap: 12px;
+    }
+    .q-num-badge {
+      background: #1f5f84;
+      color: white;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .option-btn {
+      background: #f6faff;
+      border: 2px solid #cdddee;
+      border-radius: 60px;
+      padding: 1rem 1.8rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #1b3d57;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .option-btn:hover:not(:disabled) {
+      background: #e4eefb;
+      border-color: #1e6f9f;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px -6px rgba(20, 90, 140, 0.25);
+    }
+    .option-btn.selected-correct {
+      background: #c7f0d6;
+      border-color: #1e8b4c;
+      color: #0a3b1e;
+      box-shadow: 0 0 0 2px rgba(30, 139, 76, 0.3);
+    }
+    .option-btn.selected-wrong {
+      background: #ffe0e0;
+      border-color: #c73b3b;
+      color: #6b1a1a;
+      box-shadow: 0 0 0 2px rgba(199, 59, 59, 0.3);
+    }
+    .option-btn:disabled {
+      cursor: default;
+      opacity: 0.9;
+    }
+    .option-letter {
+      font-weight: 800;
+      color: #1e6f9f;
+      width: 24px;
+      display: inline-block;
+      font-size: 1.1rem;
+    }
+    .option-btn.selected-correct .option-letter,
+    .option-btn.selected-wrong .option-letter {
+      color: inherit;
+    }
+
+    .next-area {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.8rem;
+    }
+    .next-btn {
+      background: #1f5f84;
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.1s;
+      box-shadow: 0 10px 18px -6px #1f5f8480;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .next-btn:disabled {
+      background: #b0c8db;
+      box-shadow: none;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .next-btn:hover:not(:disabled) {
+      background: #0e4160;
+      transform: scale(1.02);
+    }
+
+    .result-screen {
+      background: white;
+      border-radius: 36px;
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      box-shadow: 0 20px 30px -10px rgba(0, 30, 60, 0.2);
+      border: 1px solid #ffffff;
+    }
+    .result-screen h2 {
+      font-size: 2rem;
+      color: #0b2f4b;
+      margin-bottom: 1rem;
+    }
+    .big-score {
+      font-size: 4rem;
+      font-weight: 800;
+      color: #1f5f84;
+      line-height: 1.1;
+    }
+    .score-message {
+      font-size: 1.3rem;
+      color: #285e83;
+      margin: 0.8rem 0 1.5rem;
+    }
+    .history-box {
+      background: #e4eff9;
+      padding: 1.2rem 1.5rem;
+      border-radius: 28px;
+      margin: 1.8rem 0 1.5rem;
+      text-align: left;
+    }
+    .history-box h3 {
+      font-size: 1.1rem;
+      color: #0e3d59;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .history-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .history-item {
+      background: white;
+      border-radius: 50px;
+      padding: 0.4rem 1.2rem;
+      font-weight: 600;
+      color: #0a3146;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      border: 1px solid #b8d0e4;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .history-item span {
+      font-weight: 800;
+      color: #1f5f84;
+    }
+    .start-new-btn {
+      background: #1f5f84;
+      color: white;
+      border: none;
+      padding: 1rem 2.8rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 0.8rem;
+      box-shadow: 0 10px 18px -6px #1f5f8480;
+      transition: 0.1s;
+    }
+    .start-new-btn:hover {
+      background: #0e4160;
+      transform: scale(1.02);
+    }
+    .hidden {
+      display: none !important;
+    }
+    .feedback-msg {
+      margin-top: 0.8rem;
+      font-weight: 600;
+      font-size: 0.98rem;
+      color: #1e6f9f;
+    }
+
+    /* ===== IMAGE RAIN CONTAINER ===== */
+    #rainContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+    .rain-image {
+      position: absolute;
+      top: -150px;
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      animation: fall linear forwards;
+      opacity: 0.9;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.6; }
+    }
+  </style>
+</head>
+<body>
+<div id="rainContainer"></div>
+
+<div class="game-container" id="gameContainer">
+  <div class="top-bar">
+    <h1>⚡ Semiconductor MCQ</h1>
+    <div class="score-area">
+      <div class="score-badge">SCORE <span id="scoreDisplay">0</span></div>
+      <button class="reset-btn" id="resetBtn">⟲ New round</button>
+    </div>
+  </div>
+
+  <div class="progress-info" id="progressInfo">
+    <div>Question <span id="currentQDisplay">1</span> / <span id="totalQDisplay">30</span></div>
+    <div>Round score: <span id="roundScoreDisplay">0</span></div>
+  </div>
+
+  <div id="quizArea">
+    <div class="question-card">
+      <div class="q-text">
+        <span class="q-num-badge" id="qNumBadge">1</span>
+        <span id="questionText">Loading question...</span>
+      </div>
+      <div class="options-list" id="optionsContainer"></div>
+      <div class="feedback-msg" id="feedbackMsg"></div>
+    </div>
+    <div class="next-area">
+      <button class="next-btn" id="nextBtn" disabled>Next ➔</button>
+    </div>
+  </div>
+
+  <div id="resultScreen" class="result-screen hidden">
+    <h2>🏁 Round complete</h2>
+    <div class="big-score" id="finalScore">0</div>
+    <div class="score-message" id="scoreMessage"></div>
+    <div class="history-box">
+      <h3>📋 Previous scores (local storage)</h3>
+      <div class="history-list" id="historyList"></div>
+    </div>
+    <button class="start-new-btn" id="startNewBtn">⟳ Play again (new 30)</button>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // 300 QUESTION BANK (semiconductor manufacturing)
+  // ============================================================
+  const questionBank = [
+    // ========== SECTION 1: SILICON WAFER PRODUCTION (1-30) ==========
+    { q: "What is the starting material for silicon wafer production?", options: ["Pure silicon dioxide powder", "Quartzite sand (SiO₂)", "Trichlorosilane gas", "Metallurgical-grade silicon"], correct: 1 },
+    { q: "The carbothermic reduction of quartzite sand is carried out in an arc furnace at approximately what temperature?", options: ["900°C", "1200°C", "1900°C", "2500°C"], correct: 2 },
+    { q: "What is the typical purity of metallurgical-grade silicon (MGS)?", options: ["90–95%", "98–99%", "99.9–99.99%", "99.999999%"], correct: 1 },
+    { q: "In the Siemens process, silicon is converted to which intermediate compound before purification?", options: ["Silane (SiH₄)", "Silicon tetrachloride (SiCl₄)", "Trichlorosilane (SiHCl₃)", "Silicon dioxide (SiO₂)"], correct: 2 },
+    { q: "What purification technique is used to separate trichlorosilane from impurities in the Siemens process?", options: ["Zone refining", "Fractional distillation", "Ion exchange", "Solvent extraction"], correct: 1 },
+    { q: "Electronic-grade silicon (EGS) typically has a purity of:", options: ["99.99% (4N)", "99.9999% (6N)", ">99.999999% (9N–11N)", "100%"], correct: 2 },
+    { q: "In the Siemens process, EGS is deposited at what temperature?", options: ["800°C", "1000°C", "1150°C", "1400°C"], correct: 2 },
+    { q: "Which crystal growth method uses a quartz crucible?", options: ["Float Zone (FZ)", "Czochralski (CZ)", "Bridgman", "Epitaxial growth"], correct: 1 },
+    { q: "Which of the following is a disadvantage of the Czochralski (CZ) method compared to Float Zone (FZ)?", options: ["Lower wafer diameter capability", "Higher oxygen and carbon impurity content", "Cannot produce p-type wafers", "Requires higher temperatures"], correct: 1 },
+    { q: "Float Zone (FZ) wafers are primarily used for:", options: ["Mainstream VLSI/ULSI ICs", "Power devices and high-resistivity applications", "DRAM memory cells", "Microprocessor logic"], correct: 1 },
+    { q: "What is the maximum wafer diameter typically achievable with the Float Zone (FZ) method?", options: ["100–150 mm", "150–200 mm", "200–300 mm", "300–450 mm"], correct: 1 },
+    { q: "In wafer shaping, what is the purpose of 'lapping'?", options: ["To round the wafer edges", "To achieve thickness uniformity", "To remove the damaged layer from slicing", "To create a mirror finish"], correct: 1 },
+    { q: "Which process gives the wafer its final mirror finish?", options: ["Lapping", "Wet chemical etching", "Chemical Mechanical Polishing (CMP)", "Bevel edge rounding"], correct: 2 },
+    { q: "For a (111) n-type wafer (≤150 mm), the secondary flat is located at:", options: ["45° clockwise from the primary flat", "90° from the primary flat", "180° (directly opposite) from the primary flat", "No secondary flat exists"], correct: 0 },
+    { q: "Modern 200/300 mm wafers use which feature instead of orientation flats?", options: ["Laser-cut notch", "Edge bevel", "Alignment mark", "Flat zone"], correct: 0 },
+    { q: "The chemical reaction for carbothermic reduction of quartzite is:", options: ["SiO₂ + C → Si + CO₂", "SiO₂ + 2C → Si + 2CO", "SiO₂ + 2H₂ → Si + 2H₂O", "SiCl₄ + 2H₂ → Si + 4HCl"], correct: 1 },
+    { q: "The Siemens process reaction for EGS deposition is:", options: ["SiHCl₃ + H₂ → Si + 3HCl", "2SiHCl₃ + 2H₂ → 2Si + 6HCl", "SiCl₄ + 2H₂ → Si + 4HCl", "SiH₄ → Si + 2H₂"], correct: 1 },
+    { q: "Czochralski (CZ) grown silicon typically contains oxygen concentration of:", options: ["10¹⁴ cm⁻³", "10¹⁶ cm⁻³", "10¹⁸ cm⁻³", "10²⁰ cm⁻³"], correct: 2 },
+    { q: "Which crystal growth method is crucible-free?", options: ["Czochralski (CZ)", "Float Zone (FZ)", "Bridgman", "Casting"], correct: 1 },
+    { q: "The seed crystal in CZ growth is typically oriented in which direction?", options: ["(100)", "(110)", "(111)", "Random"], correct: 2 },
+    { q: "What is the purpose of the necking step in CZ crystal growth?", options: ["To increase diameter", "To eliminate dislocations", "To add dopants", "To reduce oxygen"], correct: 1 },
+    { q: "During CZ growth, the crystal is rotated to:", options: ["Increase growth rate", "Improve thermal uniformity", "Add impurities", "Reduce diameter"], correct: 1 },
+    { q: "The segregation coefficient (k) for boron in silicon is approximately:", options: ["0.8", "0.35", "0.023", "1.0"], correct: 0 },
+    { q: "The segregation coefficient for phosphorus in silicon is approximately:", options: ["0.8", "0.35", "0.023", "1.0"], correct: 1 },
+    { q: "Which dopant has the lowest segregation coefficient in silicon?", options: ["Boron", "Phosphorus", "Arsenic", "Antimony"], correct: 2 },
+    { q: "Inner-hole diamond saw slicing is being replaced by:", options: ["Laser cutting", "Diamond wire saw", "Water jet", "Plasma etching"], correct: 1 },
+    { q: "The wet chemical etch after lapping is used to:", options: ["Polish the surface", "Remove the damaged layer", "Add dopants", "Create oxide"], correct: 1 },
+    { q: "Bevel edge rounding is performed to:", options: ["Increase wafer diameter", "Prevent edge chipping and photoresist buildup", "Improve crystal orientation", "Reduce oxygen content"], correct: 1 },
+    { q: "The primary flat on a (100) p-type wafer indicates:", options: ["Crystal orientation and conductivity type", "Wafer diameter", "Resistivity", "Oxygen content"], correct: 0 },
+    { q: "Which wafer size is currently the mainstream for VLSI/ULSI manufacturing?", options: ["100 mm", "150 mm", "200 mm", "300 mm"], correct: 3 },
+
+    // ========== SECTION 2: THERMAL OXIDATION & DEAL-GROVE (31-70) ==========
+    { q: "In the Deal–Grove model, the general governing equation for oxide growth is:", options: ["x₀² + Ax₀ = B(t + τ)", "x₀ = Bt + A", "x₀² = A(t + τ)", "x₀ = √(Bt) + A"], correct: 0 },
+    { q: "In the Deal–Grove equation, what does the term 'τ' (tau) represent?", options: ["Oxidation time", "A time offset accounting for initial oxide present", "Temperature coefficient", "Diffusion coefficient"], correct: 1 },
+    { q: "For the oxidation of silicon, the thickness of silicon consumed (t_Si) relative to the oxide grown (x_ox) is:", options: ["t_Si = 0.44 × x_ox", "t_Si = 2.27 × x_ox", "t_Si = x_ox", "t_Si = 1.0 × x_ox"], correct: 0 },
+    { q: "In the short-time regime of oxidation, the growth follows which rate law?", options: ["Parabolic rate law", "Linear rate law", "Logarithmic rate law", "Exponential rate law"], correct: 1 },
+    { q: "In the linear rate regime, the limiting factor for oxidation is:", options: ["Diffusion of oxidant through the oxide", "Chemical reaction rate at the Si–SiO₂ interface", "Gas flow rate in the furnace", "Temperature uniformity across the wafer"], correct: 1 },
+    { q: "The linear rate constant (B/A) is also known as:", options: ["k_I", "D_eff", "N_p", "C*"], correct: 0 },
+    { q: "The activation energy for the linear rate constant is approximately:", options: ["0.5 eV", "1.0 eV", "2.0 eV", "4.0 eV"], correct: 2 },
+    { q: "The activation energy for linear oxidation is close to which energy?", options: ["Si–O bond breaking energy", "Si–Si bond breaking energy", "O–O bond breaking energy", "H–O bond breaking energy"], correct: 1 },
+    { q: "The oxidation rate is highly sensitive to crystal orientation. Which plane oxidizes faster?", options: ["(100) > (111)", "(111) > (100)", "(110) > (111)", "All planes oxidize equally"], correct: 1 },
+    { q: "Why does the (111) plane oxidize faster than the (100) plane?", options: ["It has lower atomic density", "It has a higher areal density of available bonds", "It has more impurities", "It is mechanically softer"], correct: 1 },
+    { q: "In the long-time regime, oxidation follows which rate law?", options: ["Linear rate law", "Parabolic rate law", "Exponential rate law", "Logarithmic rate law"], correct: 1 },
+    { q: "In the parabolic rate regime, the limiting factor is:", options: ["Chemical reaction at the interface", "Diffusion of oxidant through the already-grown SiO₂ film", "Supply of silicon atoms", "Surface contamination"], correct: 1 },
+    { q: "The parabolic rate constant B is given by:", options: ["B = 2D_eff(C*/N_p)", "B = D_eff/N_p", "B = C*/N_p", "B = 2D_eff + N_p"], correct: 0 },
+    { q: "In the long-time regime, the oxidation rate is:", options: ["Highly dependent on crystal orientation", "Independent of crystal orientation", "Dependent only on temperature", "Dependent only on pressure"], correct: 1 },
+    { q: "Which oxidation type produces higher density, higher dielectric breakdown field oxide?", options: ["Wet oxidation", "Dry oxidation", "Steam oxidation", "Pyrogenic oxidation"], correct: 1 },
+    { q: "The chemical reaction for dry oxidation is:", options: ["Si + 2H₂O → SiO₂ + 2H₂", "Si + O₂ → SiO₂", "Si + 2O₂ → SiO₂", "Si + H₂O → SiO₂ + H₂"], correct: 1 },
+    { q: "Wet oxidation is approximately how many times faster than dry oxidation?", options: ["1–2×", "5–10×", "20–50×", "100×"], correct: 1 },
+    { q: "Which oxidation is preferred for high-quality thin gate oxide?", options: ["Wet oxidation", "Dry oxidation", "Steam oxidation", "Pyrogenic oxidation"], correct: 1 },
+    { q: "Anomalous fast initial oxidation for dry oxidation is observed for oxide thickness:", options: ["<20 nm", "<100 nm", "<500 nm", ">1 μm"], correct: 0 },
+    { q: "When silicon is oxidized, the oxide volume expands by approximately:", options: ["1.0×", "2.27×", "0.44×", "4.5×"], correct: 1 },
+    { q: "The oxidation temperature for dry oxidation is typically:", options: ["400–600°C", "700–900°C", "900–1200°C", "1300–1500°C"], correct: 2 },
+    { q: "The oxidation temperature for wet oxidation is typically:", options: ["400–600°C", "700–900°C", "900–1200°C", "1300–1500°C"], correct: 2 },
+    { q: "In the Deal-Grove model, the term A is related to:", options: ["Diffusion coefficient only", "Reaction rate and diffusion", "Temperature only", "Pressure only"], correct: 1 },
+    { q: "The diffusivity of H₂O in SiO₂ compared to O₂ is:", options: ["Lower", "Higher", "Same", "Zero"], correct: 1 },
+    { q: "The solubility of H₂O in SiO₂ compared to O₂ is:", options: ["Lower", "Higher", "Same", "Zero"], correct: 1 },
+    { q: "For thin oxides (<30 nm), the oxidation kinetics are:", options: ["Purely parabolic", "Purely linear", "Mixed and often anomalous", "Independent of time"], correct: 2 },
+    { q: "The Deal-Grove model assumes:", options: ["Steady-state diffusion", "Constant diffusion coefficient", "Both a and b", "Neither a nor b"], correct: 2 },
+    { q: "The oxidation rate of silicon in dry O₂ at 1000°C is approximately:", options: ["10 nm/min", "1 nm/min", "100 nm/min", "0.1 nm/min"], correct: 0 },
+    { q: "The oxidation rate of silicon in steam at 1000°C is approximately:", options: ["10 nm/min", "100 nm/min", "1000 nm/min", "1 nm/min"], correct: 1 },
+    { q: "Which furnace type is used for thermal oxidation?", options: ["Resistance heated horizontal/vertical furnace", "Induction furnace", "Arc furnace", "Microwave furnace"], correct: 0 },
+    { q: "The typical oxidation furnace temperature uniformity is:", options: ["±0.1°C", "±1°C", "±10°C", "±50°C"], correct: 1 },
+    { q: "The gas flow in an oxidation furnace is typically:", options: ["Turbulent", "Laminar", "Mixed", "Random"], correct: 1 },
+    { q: "The oxidation of silicon is a:", options: ["Subtractive process", "Additive process", "Neutral process", "Lithography process"], correct: 1 },
+    { q: "The interface between Si and SiO₂ is typically:", options: ["Rough", "Atomically abrupt", "Graded over 100 nm", "Porous"], correct: 1 },
+    { q: "The fixed oxide charge density (Q_f) at the Si-SiO₂ interface is typically:", options: ["10¹⁰ cm⁻²", "10¹¹ cm⁻²", "10¹² cm⁻²", "10¹⁴ cm⁻²"], correct: 1 },
+    { q: "The interface trap density (D_it) at the Si-SiO₂ interface is typically:", options: ["10¹⁰ cm⁻²eV⁻¹", "10¹¹ cm⁻²eV⁻¹", "10¹² cm⁻²eV⁻¹", "10¹⁴ cm⁻²eV⁻¹"], correct: 0 },
+    { q: "The dielectric breakdown field of thermal SiO₂ is approximately:", options: ["1 MV/cm", "5 MV/cm", "10 MV/cm", "100 MV/cm"], correct: 2 },
+    { q: "The refractive index of thermal SiO₂ at 632.8 nm is approximately:", options: ["1.0", "1.46", "2.0", "3.5"], correct: 1 },
+    { q: "The density of thermal SiO₂ is approximately:", options: ["1.0 g/cm³", "2.2 g/cm³", "3.5 g/cm³", "5.0 g/cm³"], correct: 1 },
+    { q: "The dielectric constant of SiO₂ is approximately:", options: ["1.0", "3.9", "7.5", "25"], correct: 1 },
+    { q: "Which of the following is NOT an advantage of dry oxidation?", options: ["High density", "High dielectric breakdown", "Fast growth rate", "Low interface trap density"], correct: 2 },
+
+    // ========== SECTION 3: DOPING - DIFFUSION & ION IMPLANTATION (71-110) ==========
+    { q: "Thermal diffusion doping is typically performed at which temperature range?", options: ["200–400°C", "500–700°C", "900–1200°C", "1500–1800°C"], correct: 2 },
+    { q: "Which law governs thermal diffusion?", options: ["Fick's laws", "Ohm's law", "Newton's law", "Poisson's equation"], correct: 0 },
+    { q: "In a predeposition diffusion step, the surface concentration is:", options: ["Zero", "Constant (solid solubility limit)", "Exponentially decreasing", "Linearly increasing"], correct: 1 },
+    { q: "The drive-in diffusion step is characterized by:", options: ["Constant surface concentration", "Constant total dose (finite source)", "No diffusion", "Only lateral diffusion"], correct: 1 },
+    { q: "Ion implantation is typically performed at what temperature?", options: ["Room temperature", "500°C", "900°C", "1200°C"], correct: 0 },
+    { q: "The implanted range profile is often modeled as:", options: ["Uniform", "Gaussian", "Exponential", "Linear"], correct: 1 },
+    { q: "In the Gaussian implant profile, what does R_p represent?", options: ["Projected range", "Standard deviation", "Peak concentration", "Dose"], correct: 0 },
+    { q: "Channeling during ion implantation can be reduced by:", options: ["Tilting the wafer by ~7°", "Increasing dose", "Lowering energy", "Using a mask"], correct: 0 },
+    { q: "What is the primary advantage of ion implantation over thermal diffusion for dose control?", options: ["Lower cost", "Better uniformity and precise dose control", "Higher throughput", "No need for annealing"], correct: 1 },
+    { q: "Which annealing technique is used to activate implanted dopants with minimal diffusion?", options: ["Furnace anneal at 1000°C for 2 hours", "Rapid Thermal Annealing (RTA)", "Laser annealing at 2000°C", "No annealing needed"], correct: 1 },
+    { q: "Ion implantation causes lattice damage. What is the remedy?", options: ["Wet etching", "Rapid Thermal Annealing (RTA)", "Oxidation", "Photolithography"], correct: 1 },
+    { q: "Which of the following is an advantage of ion implantation over thermal diffusion?", options: ["Lower cost", "Isotropic profile", "Directional/anisotropic profile", "Higher temperature process"], correct: 2 },
+    { q: "Thermal diffusion produces a lateral spread under the mask of approximately:", options: ["10–20% of x_j", "70–80% of x_j", "100% of x_j", "No lateral spread"], correct: 1 },
+    { q: "The dose in ion implantation is typically expressed in:", options: ["atoms/cm²", "atoms/cm³", "cm⁻²", "atoms"], correct: 0 },
+    { q: "Which dopant is commonly used for n-type implantation?", options: ["Boron", "Phosphorus", "Gallium", "Indium"], correct: 1 },
+    { q: "Which dopant is commonly used for p-type implantation?", options: ["Boron", "Phosphorus", "Arsenic", "Antimony"], correct: 0 },
+    { q: "The energy of implanted ions typically ranges from:", options: ["0.1–1 eV", "1–500 keV", "1–500 MeV", "1–500 GeV"], correct: 1 },
+    { q: "The projected range (R_p) of implanted ions increases with:", options: ["Increasing dose", "Increasing energy", "Increasing mass", "Increasing tilt angle"], correct: 1 },
+    { q: "The standard deviation (ΔR_p) of the implant profile is also called:", options: ["Range straggle", "Lateral straggle", "Channeling", "Diffusion length"], correct: 0 },
+    { q: "The lateral straggle (ΔR_perp) is important for:", options: ["Junction depth", "Device scaling", "Channeling", "Annealing"], correct: 1 },
+    { q: "Which ion implantation damage type is created at high doses?", options: ["Point defects only", "Amorphization", "Dislocations only", "No damage"], correct: 1 },
+    { q: "The critical dose for amorphization of silicon is approximately:", options: ["10¹³ cm⁻²", "10¹⁵ cm⁻²", "10¹⁷ cm⁻²", "10¹⁹ cm⁻²"], correct: 1 },
+    { q: "Solid-phase epitaxial regrowth of amorphized silicon occurs at:", options: ["300–400°C", "500–600°C", "700–800°C", "1000–1100°C"], correct: 1 },
+    { q: "The diffusion coefficient in Fick's first law is:", options: ["Constant", "Temperature dependent", "Concentration dependent", "Both b and c"], correct: 3 },
+    { q: "Fick's second law is:", options: ["J = -D ∂C/∂x", "∂C/∂t = D ∂²C/∂x²", "C(x,t) = C_s erfc(x/2√Dt)", "All of the above"], correct: 1 },
+    { q: "For a constant surface concentration predeposition, the profile is:", options: ["Gaussian", "Erfc", "Linear", "Exponential"], correct: 1 },
+    { q: "For a constant total dose drive-in, the profile is:", options: ["Gaussian", "Erfc", "Linear", "Exponential"], correct: 0 },
+    { q: "The total dose Q(t) in predeposition is proportional to:", options: ["√t", "t", "t²", "1/t"], correct: 0 },
+    { q: "The junction depth x_j in drive-in diffusion is proportional to:", options: ["√t", "t", "t²", "1/t"], correct: 0 },
+    { q: "The diffusion coefficient of boron in silicon at 1000°C is approximately:", options: ["10⁻¹⁶ cm²/s", "10⁻¹⁴ cm²/s", "10⁻¹² cm²/s", "10⁻¹⁰ cm²/s"], correct: 2 },
+    { q: "The diffusion coefficient of phosphorus in silicon at 1000°C is approximately:", options: ["10⁻¹⁶ cm²/s", "10⁻¹⁴ cm²/s", "10⁻¹² cm²/s", "10⁻¹⁰ cm²/s"], correct: 2 },
+    { q: "The diffusion coefficient of arsenic in silicon is:", options: ["Higher than boron", "Lower than boron", "Same as boron", "Same as phosphorus"], correct: 1 },
+    { q: "The diffusion of dopants in silicon is enhanced by:", options: ["Oxidation", "Nitridation", "Vacuum annealing", "Low temperature"], correct: 0 },
+    { q: "Oxidation-enhanced diffusion (OED) is due to:", options: ["Interstitial silicon injection", "Vacancy injection", "Both a and b", "Neither a nor b"], correct: 0 },
+    { q: "The solid solubility limit of boron in silicon at 1000°C is approximately:", options: ["10¹⁸ cm⁻³", "10¹⁹ cm⁻³", "10²⁰ cm⁻³", "10²¹ cm⁻³"], correct: 2 },
+    { q: "The solid solubility limit of phosphorus in silicon at 1000°C is approximately:", options: ["10¹⁸ cm⁻³", "10¹⁹ cm⁻³", "10²⁰ cm⁻³", "10²¹ cm⁻³"], correct: 2 },
+    { q: "Which dopant diffuses fastest in silicon?", options: ["Boron", "Phosphorus", "Arsenic", "Antimony"], correct: 1 },
+    { q: "Which dopant diffuses slowest in silicon?", options: ["Boron", "Phosphorus", "Arsenic", "Antimony"], correct: 3 },
+    { q: "The diffusion mechanism for substitutional dopants in silicon is:", options: ["Interstitial", "Vacancy-assisted", "Interstitialcy", "All of the above"], correct: 3 },
+    { q: "The diffusion mechanism for interstitial dopants in silicon is:", options: ["Direct interstitial", "Vacancy-assisted", "Interstitialcy", "Kick-out"], correct: 0 },
+
+    // ========== SECTION 4: PHOTOLITHOGRAPHY (111-150) ==========
+    { q: "What is the correct order of the 8-step lithography sequence?", options: ["Dehydration → Spin coat → Soft bake → Exposure → PEB → Develop → Hard bake → Etch/strip", "Spin coat → Dehydration → Exposure → Develop → Hard bake → Etch", "Dehydration → Exposure → Spin coat → Develop → Hard bake → Etch", "Spin coat → Soft bake → Dehydration → Exposure → Develop → Etch"], correct: 0 },
+    { q: "What is the purpose of HMDS in photolithography?", options: ["To remove organics", "To promote photoresist adhesion", "To develop the resist", "To etch the substrate"], correct: 1 },
+    { q: "Positive photoresist becomes soluble in the developer when exposed to:", options: ["Heat", "UV light", "Plasma", "Chemical solvent"], correct: 1 },
+    { q: "Negative photoresist, when exposed to UV light, becomes:", options: ["Soluble in developer", "Crosslinked and insoluble", "Conductive", "Transparent"], correct: 1 },
+    { q: "Which type of photoresist typically provides higher resolution?", options: ["Positive resist", "Negative resist", "Both are equal", "Neither"], correct: 0 },
+    { q: "The Rayleigh criterion for resolution is R = k₁ λ / NA. What does NA stand for?", options: ["Numerical Aperture", "Normalized Amplitude", "Numeric Angle", "Negative Absorption"], correct: 0 },
+    { q: "Immersion lithography improves resolution by:", options: ["Increasing wavelength", "Increasing numerical aperture", "Decreasing k₁", "Using X-rays"], correct: 1 },
+    { q: "Which of the following is a resolution enhancement technique (RET)?", options: ["Phase Shift Masks (PSM)", "Spin coating", "Soft bake", "Hard bake"], correct: 0 },
+    { q: "What is the typical bake temperature for soft bake (post-apply bake)?", options: ["50°C", "90–100°C", "150°C", "200°C"], correct: 1 },
+    { q: "What is the purpose of post-exposure bake (PEB)?", options: ["To evaporate solvent", "To drive diffusion and reduce standing waves", "To harden the resist", "To develop the pattern"], correct: 1 },
+    { q: "Which developer is commonly used for positive photoresist?", options: ["TMAH", "HF", "H₂SO₄", "Acetone"], correct: 0 },
+    { q: "The hard bake step is performed at what temperature?", options: ["90°C", "120–140°C", "200°C", "300°C"], correct: 1 },
+    { q: "Why is a shorter wavelength used in advanced lithography?", options: ["Lower cost", "Higher resolution", "Faster exposure", "Better adhesion"], correct: 1 },
+    { q: "EUV lithography uses which wavelength?", options: ["193 nm", "248 nm", "13.5 nm", "436 nm"], correct: 2 },
+    { q: "Optical Proximity Correction (OPC) is used to:", options: ["Increase resist thickness", "Compensate for diffraction effects", "Reduce exposure time", "Improve adhesion"], correct: 1 },
+    { q: "The typical spin speed for photoresist coating is:", options: ["100–500 rpm", "1000–5000 rpm", "10000–20000 rpm", "50000 rpm"], correct: 1 },
+    { q: "The typical photoresist thickness for optical lithography is:", options: ["0.1–0.5 μm", "0.5–2 μm", "5–10 μm", "10–50 μm"], correct: 1 },
+    { q: "The sensitivity of photoresist is defined as:", options: ["The dose required to clear the resist", "The wavelength absorbed", "The development rate", "The etch resistance"], correct: 0 },
+    { q: "The contrast of photoresist is defined as:", options: ["The slope of the dose-response curve", "The absorption coefficient", "The development time", "The adhesion strength"], correct: 0 },
+    { q: "The standing wave effect in photoresist is caused by:", options: ["Reflection from the substrate", "Diffraction", "Interference", "All of the above"], correct: 3 },
+    { q: "The standing wave effect can be reduced by:", options: ["Using a bottom anti-reflective coating (BARC)", "Increasing exposure dose", "Decreasing soft bake time", "Using negative resist"], correct: 0 },
+    { q: "The Dill parameters A, B, C describe:", options: ["Photoresist optical properties", "Etch rates", "Development rates", "Adhesion"], correct: 0 },
+    { q: "The ABC parameters in photoresist modeling represent:", options: ["Absorption, bleaching, and exposure", "Adhesion, baking, and coating", "Aperture, beam, and contrast", "None of the above"], correct: 0 },
+    { q: "The critical dimension (CD) in lithography refers to:", options: ["The smallest feature size", "The wafer diameter", "The resist thickness", "The exposure dose"], correct: 0 },
+    { q: "The process window in lithography refers to:", options: ["The range of focus and exposure dose for acceptable CD", "The temperature range", "The resist thickness range", "The wafer size range"], correct: 0 },
+    { q: "The depth of focus (DOF) in lithography is given by:", options: ["DOF = k₂ λ / (NA)²", "DOF = k₁ λ / NA", "DOF = λ / (2 NA²)", "DOF = NA / λ"], correct: 0 },
+    { q: "The k₁ factor in the Rayleigh criterion is typically:", options: ["0.1–0.3", "0.3–0.6", "0.6–0.9", "1.0–1.5"], correct: 1 },
+    { q: "The k₂ factor in the DOF formula is typically:", options: ["0.1–0.3", "0.3–0.6", "0.6–0.9", "1.0–1.5"], correct: 1 },
+    { q: "Which lithography technique uses a liquid between the lens and wafer?", options: ["Immersion lithography", "EUV lithography", "E-beam lithography", "X-ray lithography"], correct: 0 },
+    { q: "The refractive index of water at 193 nm is approximately:", options: ["1.0", "1.44", "2.0", "3.5"], correct: 1 },
+    { q: "The maximum numerical aperture for immersion lithography is approximately:", options: ["0.5", "1.0", "1.35", "2.0"], correct: 2 },
+    { q: "Phase shift masks (PSM) work by:", options: ["Absorbing light", "Shifting the phase of light by 180°", "Reflecting light", "Scattering light"], correct: 1 },
+    { q: "Attenuating PSM (AttPSM) uses:", options: ["100% transmission", "6–18% transmission", "50% transmission", "0% transmission"], correct: 1 },
+    { q: "Alternating PSM (AltPSM) uses:", options: ["Adjacent apertures with 180° phase difference", "All apertures with same phase", "Only opaque regions", "Only clear regions"], correct: 0 },
+    { q: "The minimum feature size for 193 nm lithography is approximately:", options: ["500 nm", "250 nm", "90 nm", "22 nm"], correct: 2 },
+    { q: "The minimum feature size for EUV lithography is approximately:", options: ["100 nm", "50 nm", "22 nm", "7 nm"], correct: 3 },
+    { q: "EUV lithography operates in:", options: ["Air", "Nitrogen", "Vacuum", "Water"], correct: 2 },
+    { q: "EUV masks are:", options: ["Transmissive", "Reflective", "Absorptive", "Transparent"], correct: 1 },
+    { q: "The source for EUV lithography is:", options: ["Excimer laser", "Mercury lamp", "Laser-produced plasma", "LED"], correct: 2 },
+    { q: "The typical exposure dose for EUV lithography is:", options: ["1 mJ/cm²", "10 mJ/cm²", "100 mJ/cm²", "1000 mJ/cm²"], correct: 1 },
+
+    // ========== SECTION 5: ETCHING (151-180) ==========
+    { q: "In etching, selectivity is defined as:", options: ["Etch rate of film / etch rate of mask", "Etch rate of mask / etch rate of film", "Etch rate vertical / etch rate lateral", "Etch rate lateral / etch rate vertical"], correct: 0 },
+    { q: "Anisotropy (A_f) = 1 means:", options: ["Pure isotropic etching", "Pure anisotropic etching (vertical sidewalls)", "No etching", "Infinite selectivity"], correct: 1 },
+    { q: "Which wet etchant is used for SiO₂?", options: ["KOH", "BOE (HF + NH₄F)", "H₃PO₄", "HNA"], correct: 1 },
+    { q: "Which wet etchant is used for Si₃N₄?", options: ["BOE", "Hot phosphoric acid (H₃PO₄ at 180°C)", "KOH", "HNA"], correct: 1 },
+    { q: "Which wet etchant is used for isotropic silicon etching?", options: ["KOH", "TMAH", "HNA (HF + HNO₃ + CH₃COOH)", "BOE"], correct: 2 },
+    { q: "Anisotropic silicon etching with KOH stops on which plane?", options: ["(100)", "(110)", "(111)", "(000)"], correct: 2 },
+    { q: "Reactive Ion Etching (RIE) combines:", options: ["Chemical etching only", "Physical sputtering only", "Chemical reactive radicals + directional ion bombardment", "Wet chemical etching + UV light"], correct: 2 },
+    { q: "Which gas is commonly used in RIE for silicon etching?", options: ["SF₆", "O₂", "N₂", "H₂"], correct: 0 },
+    { q: "The Bosch process for DRIE alternates between:", options: ["SF₆ etching and C₄F₈ passivation", "HF and HNO₃", "KOH and TMAH", "O₂ and N₂"], correct: 0 },
+    { q: "What is the main advantage of dry etching over wet etching?", options: ["Lower cost", "Better anisotropy and vertical sidewalls", "Higher selectivity", "No need for masks"], correct: 1 },
+    { q: "The etch rate of KOH on (100) silicon is approximately:", options: ["0.1 μm/min", "1 μm/min", "10 μm/min", "100 μm/min"], correct: 1 },
+    { q: "The etch rate ratio of KOH on (100) vs (111) silicon is approximately:", options: ["1:1", "10:1", "100:1", "1000:1"], correct: 2 },
+    { q: "The angle of the V-groove formed by KOH etching of (100) silicon is:", options: ["45°", "54.74°", "60°", "90°"], correct: 1 },
+    { q: "TMAH is preferred over KOH for:", options: ["CMOS compatibility", "Higher etch rate", "Better selectivity", "Lower cost"], correct: 0 },
+    { q: "The selectivity of SiO₂ to Si in KOH is approximately:", options: ["1:1", "10:1", "100:1", "1000:1"], correct: 2 },
+    { q: "The selectivity of Si₃N₄ to Si in KOH is approximately:", options: ["1:1", "10:1", "100:1", "1000:1"], correct: 3 },
+    { q: "Which plasma etching gas is used for SiO₂ etching?", options: ["SF₆", "CF₄", "Cl₂", "HBr"], correct: 1 },
+    { q: "Which plasma etching gas is used for silicon etching?", options: ["SF₆", "CF₄", "CHF₃", "O₂"], correct: 0 },
+    { q: "Which plasma etching gas is used for aluminum etching?", options: ["SF₆", "CF₄", "Cl₂ + BCl₃", "O₂"], correct: 2 },
+    { q: "The ion bombardment in RIE is typically:", options: ["100–500 eV", "1–10 eV", "1–10 keV", "100 keV"], correct: 0 },
+    { q: "The pressure in RIE is typically:", options: ["10⁻⁶ Torr", "10⁻³ Torr", "1 Torr", "760 Torr"], correct: 1 },
+    { q: "The plasma in RIE consists of:", options: ["Neutral atoms only", "Ions only", "Electrons, ions, and radicals", "Photons only"], correct: 2 },
+    { q: "The etching mechanism in RIE involves:", options: ["Chemical reaction only", "Physical sputtering only", "Synergistic chemical and physical", "Thermal evaporation"], correct: 2 },
+    { q: "The undercut in isotropic etching is:", options: ["Zero", "Equal to etch depth", "Less than etch depth", "Greater than etch depth"], correct: 1 },
+    { q: "The sidewall angle in anisotropic etching is:", options: ["0°", "45°", "90°", "180°"], correct: 2 },
+    { q: "The aspect ratio in etching is defined as:", options: ["Depth / width", "Width / depth", "Depth × width", "Depth + width"], correct: 0 },
+    { q: "High aspect ratio etching (>10:1) is achieved by:", options: ["Wet etching", "DRIE", "Isotropic plasma etching", "Chemical polishing"], correct: 1 },
+    { q: "The etch stop layer for silicon etching is often:", options: ["SiO₂", "Si₃N₄", "SiGe", "All of the above"], correct: 3 },
+    { q: "The selectivity of silicon to SiO₂ in SF₆ plasma is typically:", options: ["1:1", "10:1", "100:1", "1000:1"], correct: 1 },
+    { q: "The selectivity of silicon to photoresist in plasma etching is typically:", options: ["1:1", "5:1", "10:1", "50:1"], correct: 1 },
+
+    // ========== SECTION 6: THIN FILM DEPOSITION (181-210) ==========
+    { q: "Which deposition technique is purely physical (line-of-sight)?", options: ["LPCVD", "PECVD", "Sputtering", "ALD"], correct: 2 },
+    { q: "Which CVD technique operates at the lowest temperature?", options: ["LPCVD (500–900°C)", "PECVD (200–400°C)", "APCVD (1000°C)", "Thermal oxidation"], correct: 1 },
+    { q: "ALD (Atomic Layer Deposition) is characterized by:", options: ["High deposition rate", "Self-limiting half-reactions", "Poor conformality", "Low purity"], correct: 1 },
+    { q: "Which technique gives 100% conformal coverage with atomic precision?", options: ["PVD evaporation", "Sputtering", "LPCVD", "ALD"], correct: 3 },
+    { q: "Which deposition method is standard for Al and Cu interconnect films?", options: ["Thermal evaporation", "DC/RF Sputtering", "LPCVD", "ALD"], correct: 1 },
+    { q: "In LPCVD polysilicon deposition, which gas is used?", options: ["SiH₄", "NH₃", "Cl₂", "O₂"], correct: 0 },
+    { q: "PECVD is commonly used for which application?", options: ["Gate oxide", "Final passivation (Si₃N₄)", "Deep trench isolation", "Metal lines"], correct: 1 },
+    { q: "Which deposition technique has poor step coverage and is useful for liftoff?", options: ["ALD", "LPCVD", "Thermal evaporation (PVD)", "PECVD"], correct: 2 },
+    { q: "What is the typical precursor combination for Al₂O₃ ALD?", options: ["TMA + H₂O", "SiH₄ + O₂", "WF₆ + H₂", "TiCl₄ + NH₃"], correct: 0 },
+    { q: "Which of the following is a chemical vapor deposition method?", options: ["Sputtering", "Thermal evaporation", "LPCVD", "E-beam evaporation"], correct: 2 },
+    { q: "The typical deposition rate for ALD is:", options: ["1 nm/cycle", "0.1 nm/cycle", "0.01 nm/cycle", "10 nm/cycle"], correct: 1 },
+    { q: "The typical deposition temperature for ALD is:", options: ["50–150°C", "150–350°C", "400–600°C", "700–900°C"], correct: 1 },
+    { q: "The step coverage of ALD is:", options: ["Poor", "Moderate", "Good", "100% conformal"], correct: 3 },
+    { q: "The step coverage of PVD evaporation is:", options: ["Poor", "Moderate", "Good", "100%"], correct: 0 },
+    { q: "The step coverage of LPCVD is:", options: ["Poor", "Moderate", "Good/conformal", "100%"], correct: 2 },
+    { q: "The step coverage of PECVD is:", options: ["Poor", "Fair to good", "Excellent", "100%"], correct: 1 },
+    { q: "Sputtering uses which mechanism?", options: ["Thermal evaporation", "Ion bombardment of target", "Chemical reaction", "Laser ablation"], correct: 1 },
+    { q: "The target in sputtering is:", options: ["The wafer", "The material to be deposited", "The vacuum chamber", "The gas inlet"], correct: 1 },
+    { q: "The typical pressure for sputtering is:", options: ["10⁻⁶ Torr", "10⁻³ Torr", "1 Torr", "760 Torr"], correct: 1 },
+    { q: "The typical pressure for LPCVD is:", options: ["10⁻⁶ Torr", "0.1–10 Torr", "100 Torr", "760 Torr"], correct: 1 },
+    { q: "The typical pressure for APCVD is:", options: ["10⁻⁶ Torr", "10⁻³ Torr", "100–760 Torr", "10⁻⁹ Torr"], correct: 2 },
+    { q: "The chemical reaction for LPCVD silicon nitride is:", options: ["SiH₄ + NH₃ → Si₃N₄", "3SiH₂Cl₂ + 4NH₃ → Si₃N₄", "SiH₄ + N₂ → Si₃N₄", "SiCl₄ + NH₃ → Si₃N₄"], correct: 1 },
+    { q: "The chemical reaction for LPCVD polysilicon is:", options: ["SiH₄ → Si + 2H₂", "SiHCl₃ → Si + HCl", "SiCl₄ → Si + Cl₂", "SiH₂Cl₂ → Si + HCl"], correct: 0 },
+    { q: "The chemical reaction for PECVD silicon nitride is:", options: ["SiH₄ + NH₃ → Si₃N₄", "SiH₄ + N₂ → Si₃N₄", "SiH₄ + NH₃ + N₂ → Si₃N₄", "SiH₄ + N₂O → Si₃N₄"], correct: 2 },
+    { q: "The chemical reaction for thermal oxidation of silicon is:", options: ["Si + O₂ → SiO₂", "Si + 2H₂O → SiO₂ + 2H₂", "Both a and b", "Neither a nor b"], correct: 2 },
+    { q: "The density of LPCVD silicon nitride is approximately:", options: ["1.0 g/cm³", "2.0 g/cm³", "3.0 g/cm³", "5.0 g/cm³"], correct: 2 },
+    { q: "The refractive index of LPCVD silicon nitride is approximately:", options: ["1.46", "2.0", "3.0", "4.0"], correct: 1 },
+    { q: "The dielectric constant of silicon nitride is approximately:", options: ["3.9", "7.5", "10", "25"], correct: 1 },
+    { q: "The deposition rate of LPCVD polysilicon at 620°C is approximately:", options: ["1 nm/min", "10 nm/min", "100 nm/min", "1000 nm/min"], correct: 1 },
+    { q: "The typical thickness of gate polysilicon is:", options: ["10 nm", "50 nm", "200–500 nm", "1000 nm"], correct: 2 },
+
+    // ========== SECTION 7: METROLOGY (211-230) ==========
+    { q: "The four-point probe is used to measure:", options: ["Film thickness", "Sheet resistance", "Refractive index", "Junction depth"], correct: 1 },
+    { q: "In four-point probe measurement, the outer probes supply:", options: ["Voltage", "Current", "Resistance", "Capacitance"], correct: 1 },
+    { q: "Ellipsometry measures:", options: ["Sheet resistance", "Film thickness and refractive index", "Dopant concentration", "Defect density"], correct: 1 },
+    { q: "SIMS is used for:", options: ["Surface topography", "Dopant depth profiling", "Film stress", "Sheet resistance"], correct: 1 },
+    { q: "SEM/EDX provides:", options: ["Topography and composition", "Crystal structure", "Electrical resistance", "Film thickness only"], correct: 0 },
+    { q: "The four-point probe sheet resistance formula is:", options: ["R_s = 4.532 × V/I", "R_s = 2π × V/I", "R_s = V/I", "R_s = π × V/I"], correct: 0 },
+    { q: "The four-point probe eliminates:", options: ["Contact resistance", "Sheet resistance", "Film thickness", "Dopant concentration"], correct: 0 },
+    { q: "The four-point probe is valid when:", options: ["Film thickness > probe spacing", "Film thickness < probe spacing", "Film thickness = probe spacing", "Film thickness is irrelevant"], correct: 1 },
+    { q: "Ellipsometry measures the change in:", options: ["Intensity", "Polarization state", "Wavelength", "Phase only"], correct: 1 },
+    { q: "The ellipsometry parameters are:", options: ["n and k", "Ψ and Δ", "R and T", "A and B"], correct: 1 },
+    { q: "Profilometry measures:", options: ["Film thickness", "Step height", "Refractive index", "Dopant concentration"], correct: 1 },
+    { q: "AFM measures:", options: ["Surface topography", "Film thickness", "Refractive index", "Dopant concentration"], correct: 0 },
+    { q: "TEM provides:", options: ["Surface topography", "Atomic lattice structure", "Sheet resistance", "Dopant concentration"], correct: 1 },
+    { q: "SIMS detects:", options: ["Secondary ions", "Secondary electrons", "X-rays", "Photons"], correct: 0 },
+    { q: "EDX detects:", options: ["Secondary ions", "Characteristic X-rays", "Backscattered electrons", "Auger electrons"], correct: 1 },
+    { q: "The resolution of SEM is typically:", options: ["1 mm", "1 μm", "1–10 nm", "0.1 nm"], correct: 2 },
+    { q: "The resolution of TEM is typically:", options: ["1 μm", "10 nm", "0.1–0.2 nm", "1 mm"], correct: 2 },
+    { q: "The depth resolution of SIMS is typically:", options: ["1 μm", "10 nm", "1–5 nm", "100 nm"], correct: 2 },
+    { q: "The spot size of SIMS is typically:", options: ["1 mm", "100 μm", "10–50 μm", "1 nm"], correct: 2 },
+    { q: "The four-point probe probe spacing is typically:", options: ["0.1 mm", "1 mm", "10 mm", "100 mm"], correct: 1 },
+
+    // ========== SECTION 8: CMOS FABRICATION (231-270) ==========
+    { q: "In a CMOS inverter, the pMOS transistor acts as:", options: ["Pull-down", "Pull-up", "Pass gate", "Capacitor"], correct: 1 },
+    { q: "An SRAM cell typically uses how many transistors?", options: ["1", "2", "4", "6"], correct: 3 },
+    { q: "A DRAM cell consists of:", options: ["6 transistors", "1 transistor + 1 capacitor", "2 transistors + 1 capacitor", "4 transistors"], correct: 1 },
+    { q: "LOCOS is used for:", options: ["Gate oxide growth", "Active area isolation", "Metal deposition", "Photolithography"], correct: 1 },
+    { q: "The self-aligned source/drain implantation uses which layer as a mask?", options: ["Photoresist", "Gate polysilicon", "Field oxide", "Nitride"], correct: 1 },
+    { q: "The first step in CMOS fabrication is:", options: ["Well formation", "Gate oxidation", "Isolation", "Metallization"], correct: 0 },
+    { q: "The purpose of the n-well is to:", options: ["Form pMOS body", "Form nMOS body", "Isolate devices", "Reduce resistance"], correct: 0 },
+    { q: "The purpose of the p-well is to:", options: ["Form pMOS body", "Form nMOS body", "Isolate devices", "Reduce resistance"], correct: 1 },
+    { q: "Twin-well CMOS uses:", options: ["Only n-well", "Only p-well", "Both n-well and p-well", "No wells"], correct: 2 },
+    { q: "The threshold voltage adjust implant is:", options: ["Deep and high dose", "Shallow and low dose", "Deep and low dose", "Shallow and high dose"], correct: 1 },
+    { q: "The gate oxide thickness for modern CMOS is:", options: ["1–2 nm", "5–10 nm", "20–50 nm", "100 nm"], correct: 0 },
+    { q: "The gate electrode material in modern CMOS is:", options: ["Aluminum", "Polysilicon", "Titanium", "Copper"], correct: 1 },
+    { q: "The gate length (L_g) in modern CMOS is:", options: ["1 μm", "0.1 μm", "10–100 nm", "1 nm"], correct: 2 },
+    { q: "The source/drain extension (SDE) is used to:", options: ["Reduce short channel effects", "Increase resistance", "Increase capacitance", "Reduce speed"], correct: 0 },
+    { q: "The halo/pocket implant is used to:", options: ["Reduce short channel effects", "Increase resistance", "Increase capacitance", "Reduce speed"], correct: 0 },
+    { q: "The salicide process forms:", options: ["SiO₂", "Si₃N₄", "TiSi₂ or CoSi₂", "Al"], correct: 2 },
+    { q: "The interlayer dielectric (ILD) is typically:", options: ["SiO₂ or low-k material", "Si₃N₄", "Polysilicon", "Metal"], correct: 0 },
+    { q: "The contact via is filled with:", options: ["SiO₂", "Tungsten", "Polysilicon", "Photoresist"], correct: 1 },
+    { q: "The barrier layer for aluminum metallization is:", options: ["Ti/TiN", "SiO₂", "Si₃N₄", "Polysilicon"], correct: 0 },
+    { q: "The interconnect metal in modern CMOS is:", options: ["Aluminum", "Copper", "Tungsten", "Gold"], correct: 1 },
+    { q: "Copper interconnect requires:", options: ["Damascene process", "Subtractive etch", "Liftoff", "Selective epitaxy"], correct: 0 },
+    { q: "The passivation layer is typically:", options: ["SiO₂", "Si₃N₄", "Polysilicon", "Metal"], correct: 1 },
+    { q: "The forming gas anneal is performed at:", options: ["200°C", "450°C", "800°C", "1000°C"], correct: 1 },
+    { q: "The forming gas is a mixture of:", options: ["H₂ and N₂", "O₂ and N₂", "Ar and H₂", "He and N₂"], correct: 0 },
+    { q: "The purpose of the forming gas anneal is to:", options: ["Sinter contacts and passivate interface states", "Grow oxide", "Etch silicon", "Deposit metal"], correct: 0 },
+    { q: "STI stands for:", options: ["Shallow Trench Isolation", "Silicon Trench Insulation", "Substrate Thermal Isolation", "Surface Treatment Interface"], correct: 0 },
+    { q: "STI is preferred over LOCOS for:", options: ["Smaller feature sizes", "Lower cost", "Higher temperature", "Simpler process"], correct: 0 },
+    { q: "The STI trench is filled with:", options: ["SiO₂", "Si₃N₄", "Polysilicon", "Metal"], correct: 0 },
+    { q: "The pad oxide in LOCOS is used to:", options: ["Reduce stress", "Increase oxidation rate", "Etch silicon", "Deposit nitride"], correct: 0 },
+    { q: "The nitride layer in LOCOS is used as:", options: ["Oxidation mask", "Etch mask", "Dopant source", "Insulator"], correct: 0 },
+    { q: "The bird's beak in LOCOS is:", options: ["Desired", "Undesired lateral oxidation", "A metal feature", "A lithography artifact"], correct: 1 },
+    { q: "The field oxide thickness in LOCOS is typically:", options: ["100 nm", "500 nm", "1 μm", "5 μm"], correct: 2 },
+    { q: "The threshold voltage of an nMOS transistor is typically:", options: ["-1 V", "0 V", "0.3–0.7 V", "2 V"], correct: 2 },
+    { q: "The threshold voltage of a pMOS transistor is typically:", options: ["-1 to -0.3 V", "0 V", "0.3–0.7 V", "2 V"], correct: 0 },
+    { q: "The body effect refers to:", options: ["Threshold voltage dependence on substrate bias", "Current dependence on drain voltage", "Capacitance dependence on frequency", "Resistance dependence on temperature"], correct: 0 },
+    { q: "The channel length modulation refers to:", options: ["Drain current dependence on drain voltage in saturation", "Threshold voltage dependence on substrate bias", "Capacitance dependence on frequency", "Resistance dependence on temperature"], correct: 0 },
+    { q: "The subthreshold swing is typically:", options: ["10 mV/decade", "60–100 mV/decade", "200 mV/decade", "500 mV/decade"], correct: 1 },
+    { q: "The ideal subthreshold swing at room temperature is:", options: ["10 mV/decade", "60 mV/decade", "100 mV/decade", "200 mV/decade"], correct: 1 },
+    { q: "The DIBL effect stands for:", options: ["Drain-Induced Barrier Lowering", "Dielectric-Induced Barrier Lowering", "Dopant-Induced Barrier Lowering", "Defect-Induced Barrier Lowering"], correct: 0 },
+    { q: "The DIBL effect is more pronounced in:", options: ["Long channel devices", "Short channel devices", "Wide devices", "Narrow devices"], correct: 1 },
+
+    // ========== SECTION 9: PACKAGING (271-300) ==========
+    { q: "Which packaging method offers the highest pin count?", options: ["Wire bonding", "TAB", "Flip-chip (C4)", "Through-hole"], correct: 2 },
+    { q: "Wire bonding typically uses which materials?", options: ["Gold or aluminum", "Copper only", "Silver only", "Tungsten"], correct: 0 },
+    { q: "Flip-chip requires what to mitigate CTE mismatch stress?", options: ["Underfill epoxy", "Solder mask", "Heat sink", "Conformal coating"], correct: 0 },
+    { q: "Tape Automated Bonding (TAB) uses:", options: ["Gold wires", "Polymer tape with copper leads", "Solder bumps", "Aluminum wedge bonds"], correct: 1 },
+    { q: "Which packaging method has the lowest parasitic inductance?", options: ["Wire bonding", "TAB", "Flip-chip", "All equal"], correct: 2 },
+    { q: "The coefficient of thermal expansion (CTE) mismatch between silicon and copper is approximately:", options: ["1:1", "2:1", "6:1", "10:1"], correct: 2 },
+    { q: "The underfill material in flip-chip is typically:", options: ["Epoxy", "Solder", "Silicon", "Glass"], correct: 0 },
+    { q: "The solder bump composition in flip-chip is typically:", options: ["Pb-Sn or SAC alloys", "Pure copper", "Pure aluminum", "Pure gold"], correct: 0 },
+    { q: "The diameter of a typical solder bump is:", options: ["1 μm", "10 μm", "50–100 μm", "500 μm"], correct: 2 },
+    { q: "The pitch of solder bumps in flip-chip is typically:", options: ["1 μm", "10 μm", "100–200 μm", "500 μm"], correct: 2 },
+    { q: "Wire bonding can be performed by:", options: ["Thermocompression", "Ultrasonic", "Thermosonic", "All of the above"], correct: 3 },
+    { q: "The ball bond in wire bonding is formed at:", options: ["The die pad", "The leadframe", "Both", "Neither"], correct: 0 },
+    { q: "The wedge bond in wire bonding is formed at:", options: ["The die pad", "The leadframe", "Both", "Neither"], correct: 1 },
+    { q: "The wire diameter in wire bonding is typically:", options: ["1 μm", "10 μm", "25–50 μm", "100 μm"], correct: 2 },
+    { q: "The loop height in wire bonding is typically:", options: ["10 μm", "50 μm", "100–200 μm", "1 mm"], correct: 2 },
+    { q: "The die attach material is typically:", options: ["Epoxy or solder", "Silicon", "Glass", "Copper"], correct: 0 },
+    { q: "The leadframe material is typically:", options: ["Copper alloy", "Silicon", "Glass", "Ceramic"], correct: 0 },
+    { q: "The package substrate material for flip-chip is typically:", options: ["Organic (BT resin)", "Silicon", "Glass", "Ceramic"], correct: 0 },
+    { q: "The ball grid array (BGA) uses:", options: ["Perimeter leads", "Solder balls on the bottom", "Wire bonds on top", "Through-hole pins"], correct: 1 },
+    { q: "The chip-scale package (CSP) has a size that is:", options: ["Equal to the die", "Slightly larger than the die", "Much larger than the die", "Independent of die size"], correct: 1 },
+    { q: "The system-in-package (SiP) integrates:", options: ["Multiple dies in one package", "One die only", "Discrete components only", "No dies"], correct: 0 },
+    { q: "The through-silicon via (TSV) is used for:", options: ["3D integration", "2D integration", "Wire bonding", "Flip-chip"], correct: 0 },
+    { q: "The TSV diameter is typically:", options: ["1 μm", "5–10 μm", "50 μm", "100 μm"], correct: 1 },
+    { q: "The TSV depth is typically:", options: ["1 μm", "10 μm", "50–100 μm", "500 μm"], correct: 2 },
+    { q: "The TSV is filled with:", options: ["Copper", "Tungsten", "Polysilicon", "All of the above"], correct: 3 },
+    { q: "The 3D IC stacking uses:", options: ["TSV and microbumps", "Wire bonding only", "Flip-chip only", "TAB only"], correct: 0 },
+    { q: "The thermal management in 3D ICs is challenging because:", options: ["High power density", "Low thermal conductivity", "Both a and b", "Neither a nor b"], correct: 2 },
+    { q: "The interposer in 2.5D integration is:", options: ["Silicon or organic", "Copper", "Aluminum", "Glass only"], correct: 0 },
+    { q: "The microbump pitch in 3D ICs is typically:", options: ["1 μm", "10 μm", "40–50 μm", "100 μm"], correct: 2 },
+    { q: "The final test of packaged ICs includes:", options: ["Functional test", "Parametric test", "Burn-in", "All of the above"], correct: 3 },
+    { q: "The burn-in test is used to:", options: ["Screen early failures", "Increase speed", "Reduce power", "Improve yield"], correct: 0 },
+    { q: "The yield of a wafer is typically:", options: ["10–30%", "50–70%", "80–95%", "100%"], correct: 2 },
+    { q: "The defect density (D) in yield modeling is typically:", options: ["0.1–1 defects/cm²", "1–5 defects/cm²", "10 defects/cm²", "100 defects/cm²"], correct: 0 },
+    { q: "The Poisson yield model is:", options: ["Y = e^(-AD)", "Y = 1/(1+AD)", "Y = 1/(1+AD)²", "Y = e^(-√(AD))"], correct: 0 },
+    { q: "The Murphy yield model is:", options: ["Y = e^(-AD)", "Y = ((1-e^(-AD))/(AD))²", "Y = 1/(1+AD)", "Y = e^(-√(AD))"], correct: 1 },
+    { q: "The seeds yield model is:", options: ["Y = e^(-AD)", "Y = 1/(1+AD)", "Y = 1/(1+AD)²", "Y = e^(-√(AD))"], correct: 1 },
+    { q: "The clustered yield model is:", options: ["Y = e^(-AD)", "Y = 1/(1+AD)", "Y = 1/(1+AD)²", "Y = e^(-√(AD))"], correct: 1 },
+    { q: "The negative binomial yield model is:", options: ["Y = e^(-AD)", "Y = (1+AD/α)^(-α)", "Y = 1/(1+AD)", "Y = e^(-√(AD))"], correct: 1 },
+    { q: "The α parameter in the negative binomial model represents:", options: ["Clustering", "Defect density", "Area", "Yield"], correct: 0 },
+    { q: "The critical area (A_c) in yield modeling is:", options: ["The total die area", "The area sensitive to defects", "The wafer area", "The package area"], correct: 1 },
+    { q: "The defect density is typically measured in:", options: ["defects/cm", "defects/cm²", "defects/cm³", "defects"], correct: 1 },
+    { q: "The wafer edge die are typically:", options: ["High yield", "Low yield", "Same yield", "No die"], correct: 1 },
+    { q: "The wafer flat/notch is used for:", options: ["Alignment", "Orientation", "Both a and b", "Neither a nor b"], correct: 2 },
+    { q: "The notch on 300 mm wafers indicates:", options: ["Crystal orientation", "Wafer diameter", "Resistivity", "Oxygen content"], correct: 0 },
+    { q: "The wafer ID is typically marked by:", options: ["Laser scribe", "Ink", "Photolithography", "Etching"], correct: 0 },
+    { q: "The edge exclusion on a 300 mm wafer is typically:", options: ["1 mm", "3 mm", "5 mm", "10 mm"], correct: 1 },
+    { q: "The usable wafer area for 300 mm wafers is approximately:", options: ["50%", "70%", "85%", "95%"], correct: 2 },
+    { q: "The number of dies per 300 mm wafer for a 10 mm × 10 mm die is approximately:", options: ["100", "300", "600", "1000"], correct: 2 },
+    { q: "The number of dies per 300 mm wafer for a 20 mm × 20 mm die is approximately:", options: ["50", "100", "150", "200"], correct: 2 },
+    { q: "The cost per die decreases with:", options: ["Smaller die size", "Larger wafer size", "Higher yield", "All of the above"], correct: 3 },
+    { q: "The learning curve in semiconductor manufacturing is:", options: ["Linear", "Exponential", "Logarithmic", "Quadratic"], correct: 1 }
+  ];
+
+  // ============================================================
+  // IMAGE RAIN SOURCES
+  // ============================================================
+  const WRONG_IMAGES = [
+    'https://i.pinimg.com/1200x/9b/03/24/9b03243049014c545e395c32a25c2e59.jpg',
+    'https://i.pinimg.com/736x/a2/80/33/a28033f417048f918f94cb1838324133.jpg'
+  ];
+
+  const CORRECT_IMAGES = [
+    'https://i.pinimg.com/736x/eb/27/ba/eb27ba47295e2807ab4cea298833b4dc.jpg',
+    'https://i.pinimg.com/736x/e4/91/d9/e491d9f382ac777b8176087054ddc776.jpg'
+  ];
+
+  // ============================================================
+  // IMAGE RAIN FUNCTION
+  // ============================================================
+  function triggerImageRain(isCorrect) {
+    const rainContainer = document.getElementById('rainContainer');
+    const imageUrls = isCorrect ? CORRECT_IMAGES : WRONG_IMAGES;
+
+    // Clear any existing rain first
+    rainContainer.innerHTML = '';
+
+    const totalImages = 25; // number of images to rain
+    const duration = 3000;  // 3 seconds
+
+    for (let i = 0; i < totalImages; i++) {
+      const img = document.createElement('img');
+      img.src = imageUrls[i % imageUrls.length];
+      img.className = 'rain-image';
+
+      // random horizontal position
+      const leftPos = Math.random() * 100;
+      img.style.left = leftPos + '%';
+
+      // random size between 60 and 120 px
+      const size = 60 + Math.random() * 60;
+      img.style.width = size + 'px';
+      img.style.height = size + 'px';
+
+      // random animation duration between 2 and 3 seconds
+      const animDuration = 2 + Math.random() * 1.2;
+      img.style.animationDuration = animDuration + 's';
+
+      // random delay between 0 and 0.8 seconds
+      const delay = Math.random() * 0.8;
+      img.style.animationDelay = delay + 's';
+
+      // random initial rotation
+      img.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+      rainContainer.appendChild(img);
+    }
+
+    // Clean up after 3 seconds
+    setTimeout(() => {
+      rainContainer.innerHTML = '';
+    }, duration);
+  }
+
+  // ============================================================
+  // GAME STATE
+  // ============================================================
+  const QUESTIONS_PER_ROUND = 30;
+  let currentRoundQuestions = [];
+  let currentIndex = 0;
+  let roundScore = 0;
+  let answered = false;
+  let selectedOptionIndex = null;
+
+  // DOM elements
+  const quizArea = document.getElementById('quizArea');
+  const resultScreen = document.getElementById('resultScreen');
+  const questionText = document.getElementById('questionText');
+  const optionsContainer = document.getElementById('optionsContainer');
+  const qNumBadge = document.getElementById('qNumBadge');
+  const currentQDisplay = document.getElementById('currentQDisplay');
+  const totalQDisplay = document.getElementById('totalQDisplay');
+  const roundScoreDisplay = document.getElementById('roundScoreDisplay');
+  const scoreDisplay = document.getElementById('scoreDisplay');
+  const nextBtn = document.getElementById('nextBtn');
+  const feedbackMsg = document.getElementById('feedbackMsg');
+  const finalScore = document.getElementById('finalScore');
+  const scoreMessage = document.getElementById('scoreMessage');
+  const historyList = document.getElementById('historyList');
+  const resetBtn = document.getElementById('resetBtn');
+  const startNewBtn = document.getElementById('startNewBtn');
+
+  // --------------------------------------------------------------
+  // HELPER: shuffle array (Fisher-Yates)
+  // --------------------------------------------------------------
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // --------------------------------------------------------------
+  // LOCAL STORAGE – history of scores
+  // --------------------------------------------------------------
+  function getScoreHistory() {
+    const stored = localStorage.getItem('semiQuizScores');
+    return stored ? JSON.parse(stored) : [];
+  }
+
+  function saveScoreToHistory(score) {
+    const history = getScoreHistory();
+    const date = new Date().toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    history.push({ score, date });
+    if (history.length > 12) history.shift();
+    localStorage.setItem('semiQuizScores', JSON.stringify(history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const history = getScoreHistory();
+    if (!historyList) return;
+    if (history.length === 0) {
+      historyList.innerHTML = '<div class="history-item" style="opacity:0.7;">No scores yet</div>';
+      return;
+    }
+    historyList.innerHTML = history.map(entry =>
+      `<div class="history-item">📅 ${entry.date} → <span>${entry.score}/30</span></div>`
+    ).join('');
+  }
+
+  // --------------------------------------------------------------
+  // START A NEW ROUND (30 random questions)
+  // --------------------------------------------------------------
+  function startNewRound() {
+    const shuffledBank = shuffleArray([...questionBank]);
+    currentRoundQuestions = shuffledBank.slice(0, QUESTIONS_PER_ROUND);
+    currentIndex = 0;
+    roundScore = 0;
+    answered = false;
+    selectedOptionIndex = null;
+
+    totalQDisplay.textContent = QUESTIONS_PER_ROUND;
+    roundScoreDisplay.textContent = '0';
+    scoreDisplay.textContent = '0';
+    quizArea.classList.remove('hidden');
+    resultScreen.classList.add('hidden');
+
+    renderQuestion();
+  }
+
+  // --------------------------------------------------------------
+  // RENDER CURRENT QUESTION
+  // --------------------------------------------------------------
+  function renderQuestion() {
+    const q = currentRoundQuestions[currentIndex];
+    if (!q) return;
+
+    answered = false;
+    selectedOptionIndex = null;
+    nextBtn.disabled = true;
+    feedbackMsg.textContent = '';
+
+    qNumBadge.textContent = currentIndex + 1;
+    currentQDisplay.textContent = currentIndex + 1;
+    questionText.textContent = q.q;
+
+    optionsContainer.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="option-letter">${letters[idx]}</span> ${opt}`;
+      btn.dataset.optionIndex = idx;
+      btn.addEventListener('click', () => handleOptionClick(idx, btn));
+      optionsContainer.appendChild(btn);
+    });
+  }
+
+  // --------------------------------------------------------------
+  // HANDLE OPTION CLICK
+  // --------------------------------------------------------------
+  function handleOptionClick(optIdx, btnElement) {
+    if (answered) return;
+
+    const q = currentRoundQuestions[currentIndex];
+    const isCorrect = (optIdx === q.correct);
+    answered = true;
+    selectedOptionIndex = optIdx;
+
+    document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+    const allBtns = document.querySelectorAll('.option-btn');
+    if (isCorrect) {
+      btnElement.classList.add('selected-correct');
+      roundScore += 1;
+      feedbackMsg.textContent = '✅ Correct!';
+      feedbackMsg.style.color = '#1e8b4c';
+    } else {
+      btnElement.classList.add('selected-wrong');
+      feedbackMsg.textContent = `❌ Wrong. The correct answer was ${String.fromCharCode(65 + q.correct)}.`;
+      feedbackMsg.style.color = '#b33';
+      allBtns[q.correct].classList.add('selected-correct');
+    }
+
+    // 🔥 TRIGGER IMAGE RAIN
+    triggerImageRain(isCorrect);
+
+    roundScoreDisplay.textContent = roundScore;
+    scoreDisplay.textContent = roundScore;
+    nextBtn.disabled = false;
+  }
+
+  // --------------------------------------------------------------
+  // NEXT QUESTION / FINISH ROUND
+  // --------------------------------------------------------------
+  function goToNext() {
+    if (!answered) return;
+
+    if (currentIndex + 1 < QUESTIONS_PER_ROUND) {
+      currentIndex++;
+      renderQuestion();
+    } else {
+      finishRound();
+    }
+  }
+
+  // --------------------------------------------------------------
+  // FINISH ROUND
+  // --------------------------------------------------------------
+  function finishRound() {
+    saveScoreToHistory(roundScore);
+
+    quizArea.classList.add('hidden');
+    resultScreen.classList.remove('hidden');
+
+    finalScore.textContent = `${roundScore} / ${QUESTIONS_PER_ROUND}`;
+    const percentage = Math.round((roundScore / QUESTIONS_PER_ROUND) * 100);
+
+    let msg = '';
+    if (percentage >= 90) msg = '🏆 Outstanding! You are exam ready.';
+    else if (percentage >= 70) msg = '👍 Good job! A little more revision.';
+    else if (percentage >= 50) msg = '📘 Not bad, but review the tricky topics.';
+    else msg = '📚 Keep studying — you will get there!';
+    scoreMessage.textContent = `${percentage}% · ${msg}`;
+
+    renderHistory();
+  }
+
+  // --------------------------------------------------------------
+  // RESET / NEW ROUND
+  // --------------------------------------------------------------
+  function resetGame() {
+    startNewRound();
+  }
+
+  // --------------------------------------------------------------
+  // EVENT LISTENERS
+  // --------------------------------------------------------------
+  nextBtn.addEventListener('click', goToNext);
+  resetBtn.addEventListener('click', resetGame);
+  startNewBtn.addEventListener('click', () => startNewRound());
+
+  // --------------------------------------------------------------
+  // INITIALIZE
+  // --------------------------------------------------------------
+  function initGame() {
+    renderHistory();
+    startNewRound();
+  }
+
+  initGame();
+  totalQDisplay.textContent = QUESTIONS_PER_ROUND;
+</script>
+</body>
+</html>
