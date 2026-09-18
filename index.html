@@ -3,331 +3,563 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semiconductor MCQ Game · 300 questions · Image Rain</title>
+  <title>SEMI QUIZ · ARCADE CARD UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      background: linear-gradient(145deg, #eef4fa 0%, #dae6f2 100%);
+      background: #f0e8dc;
+      background-image: 
+        radial-gradient(circle at 20% 30%, #fce4b8 0%, transparent 35%),
+        radial-gradient(circle at 80% 70%, #f8d0e8 0%, transparent 35%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 1.5rem 1rem;
+      align-items: center;
+      padding: 1.2rem 1rem;
+      font-family: 'Nunito', sans-serif;
       overflow-x: hidden;
     }
-    .game-container {
-      max-width: 1000px;
+
+    /* ===== CARD WRAPPER ===== */
+    .game-wrapper {
+      max-width: 900px;
       width: 100%;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(4px);
-      border-radius: 42px;
-      padding: 2rem 1.8rem 2.2rem;
-      box-shadow: 0 25px 40px -12px rgba(0, 30, 60, 0.35), inset 0 1px 4px rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.7);
       position: relative;
-      z-index: 2;
     }
 
-    .top-bar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.8rem;
+    /* Chunky offset shadow like the reference */
+    .game-card {
+      background: #fffdf5;
+      border: 3px solid #2b2b2b;
+      border-radius: 24px;
+      padding: 1.8rem 1.8rem 1.5rem;
+      box-shadow: 
+        6px 6px 0 #2b2b2b,
+        8px 8px 0 #a89a8a;
+      position: relative;
     }
-    h1 {
-      font-size: 1.9rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #0b2f4b, #1f5f84);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .score-area {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      background: white;
-      padding: 0.7rem 1.3rem;
-      border-radius: 60px;
-      box-shadow: 0 4px 12px rgba(0, 20, 30, 0.08);
-      border: 1px solid #cdddee;
-    }
-    .score-badge {
-      font-weight: 600;
-      color: #1e4a6b;
-      font-size: 1rem;
-      background: #e4eef9;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-    }
-    .score-badge span {
-      color: #0a3146;
-      font-weight: 800;
-      font-size: 1.2rem;
-      margin-left: 6px;
-    }
-    .reset-btn {
-      background: #1f5f84;
-      color: white;
+
+    /* ===== CLOSE BUTTON ===== */
+    .close-btn {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      background: transparent;
       border: none;
-      padding: 0.6rem 1.6rem;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #2b2b2b;
       cursor: pointer;
-      transition: all 0.15s;
-      box-shadow: 0 4px 8px rgba(20, 80, 130, 0.3);
+      line-height: 1;
+      transition: transform 0.15s;
+      font-family: 'Nunito', sans-serif;
+    }
+    .close-btn:hover { transform: scale(1.2) rotate(90deg); }
+
+    /* ===== TITLE ===== */
+    .game-title {
+      text-align: center;
+      font-size: 1.7rem;
+      font-weight: 900;
+      color: #2b2b2b;
+      letter-spacing: 1px;
+      margin-bottom: 1.2rem;
+      text-transform: uppercase;
+    }
+    .game-title .accent {
+      color: #8b6fbf;
+    }
+
+    /* ===== INFO PANEL (purple box like reference) ===== */
+    .info-panel {
+      background: #8b6fbf;
+      border: 3px solid #2b2b2b;
+      border-radius: 16px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.4rem;
+      box-shadow: 
+        4px 4px 0 #5e4a86,
+        6px 6px 0 #2b2b2b;
+      text-align: center;
+      color: #2b2b2b;
+    }
+    .info-panel .big {
+      font-size: 1.1rem;
+      font-weight: 900;
+      margin-bottom: 0.3rem;
+      color: #fffdf5;
+      text-shadow: 1px 1px 0 #2b2b2b;
+    }
+    .info-panel .small {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #e8ddf5;
+    }
+
+    /* ===== HUD ROW ===== */
+    .hud-row {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .hud-chip {
+      background: #fff8e0;
+      border: 3px solid #2b2b2b;
+      border-radius: 14px;
+      padding: 0.5rem 1rem;
+      font-weight: 900;
+      font-size: 0.85rem;
+      color: #2b2b2b;
+      box-shadow: 3px 3px 0 #2b2b2b;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 0.5rem;
     }
-    .reset-btn:hover {
-      background: #0e4160;
-      transform: scale(1.02);
+    .hud-chip .val {
+      background: #2b2b2b;
+      color: #fffdf5;
+      padding: 0.15rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      min-width: 30px;
+      text-align: center;
     }
-    .progress-info {
-      background: white;
-      padding: 0.8rem 1.2rem;
-      border-radius: 50px;
-      margin-bottom: 1.8rem;
-      display: flex;
-      justify-content: space-between;
-      font-weight: 600;
-      color: #0e3d59;
-      border: 1px solid #bfd7ec;
-      box-shadow: inset 0 1px 4px #ffffff, 0 2px 6px rgba(0,0,0,0.02);
-      font-size: 1.05rem;
+    .hud-chip.green { background: #d4f5c4; }
+    .hud-chip.yellow { background: #fceb8a; }
+    .hud-chip.purple { background: #e0d0f5; }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-track {
+      background: #fff8e0;
+      border: 3px solid #2b2b2b;
+      border-radius: 20px;
+      height: 20px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+      box-shadow: 3px 3px 0 #2b2b2b;
+      position: relative;
     }
-    .progress-info span {
-      background: #d2e2f2;
-      padding: 0.2rem 1.1rem;
-      border-radius: 30px;
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: repeating-linear-gradient(
+        45deg,
+        #c5f06b,
+        #c5f06b 8px,
+        #a8e04a 8px,
+        #a8e04a 16px
+      );
+      transition: width 0.3s ease;
+      border-right: 3px solid #2b2b2b;
     }
+
+    /* ===== QUESTION CARD ===== */
     .question-card {
-      background: white;
-      border-radius: 32px;
-      padding: 2rem 2rem 1.8rem;
-      box-shadow: 0 12px 28px -8px rgba(0, 40, 70, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.7);
-      margin-bottom: 1.5rem;
+      background: #fff;
+      border: 3px solid #2b2b2b;
+      border-radius: 18px;
+      padding: 1.3rem 1.4rem 1.4rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 
+        4px 4px 0 #a89a8a,
+        6px 6px 0 #2b2b2b;
+      position: relative;
+    }
+    .q-label {
+      position: absolute;
+      top: -12px;
+      left: 16px;
+      background: #ff7b7b;
+      border: 3px solid #2b2b2b;
+      border-radius: 10px;
+      padding: 0.15rem 0.7rem;
+      font-size: 0.65rem;
+      font-weight: 900;
+      color: #2b2b2b;
+      letter-spacing: 1px;
+      box-shadow: 2px 2px 0 #2b2b2b;
     }
     .q-text {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #0b2a40;
-      margin-bottom: 1.8rem;
-      line-height: 1.45;
-      display: flex;
-      gap: 12px;
-    }
-    .q-num-badge {
-      background: #1f5f84;
-      color: white;
-      border-radius: 50%;
-      width: 34px;
-      height: 34px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
       font-size: 1rem;
-      flex-shrink: 0;
-      margin-top: 4px;
+      font-weight: 800;
+      color: #2b2b2b;
+      line-height: 1.5;
+      margin: 0.4rem 0 1.2rem;
+      display: flex;
+      gap: 10px;
     }
+    .q-num {
+      background: #8b6fbf;
+      color: #fffdf5;
+      border: 2px solid #2b2b2b;
+      border-radius: 8px;
+      padding: 0.1rem 0.5rem;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      height: fit-content;
+      box-shadow: 2px 2px 0 #2b2b2b;
+    }
+
+    /* ===== OPTIONS ===== */
     .options-list {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
+      gap: 0.7rem;
     }
     .option-btn {
-      background: #f6faff;
-      border: 2px solid #cdddee;
-      border-radius: 60px;
-      padding: 1rem 1.8rem;
-      font-size: 1.05rem;
-      font-weight: 500;
+      background: #fff8e0;
+      border: 3px solid #2b2b2b;
+      border-radius: 14px;
+      padding: 0.8rem 1rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #2b2b2b;
       text-align: left;
       cursor: pointer;
-      transition: all 0.1s;
+      transition: all 0.12s;
       display: flex;
       align-items: center;
-      gap: 14px;
-      color: #1b3d57;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      gap: 12px;
+      box-shadow: 3px 3px 0 #a89a8a, 4px 4px 0 #2b2b2b;
+      line-height: 1.35;
     }
     .option-btn:hover:not(:disabled) {
-      background: #e4eefb;
-      border-color: #1e6f9f;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px -6px rgba(20, 90, 140, 0.25);
+      background: #fceb8a;
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 #a89a8a, 6px 6px 0 #2b2b2b;
     }
-    .option-btn.selected-correct {
-      background: #c7f0d6;
-      border-color: #1e8b4c;
-      color: #0a3b1e;
-      box-shadow: 0 0 0 2px rgba(30, 139, 76, 0.3);
+    .option-btn:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 #a89a8a, 2px 2px 0 #2b2b2b;
     }
-    .option-btn.selected-wrong {
-      background: #ffe0e0;
-      border-color: #c73b3b;
-      color: #6b1a1a;
-      box-shadow: 0 0 0 2px rgba(199, 59, 59, 0.3);
-    }
-    .option-btn:disabled {
-      cursor: default;
-      opacity: 0.9;
-    }
-    .option-letter {
-      font-weight: 800;
-      color: #1e6f9f;
-      width: 24px;
-      display: inline-block;
-      font-size: 1.1rem;
-    }
-    .option-btn.selected-correct .option-letter,
-    .option-btn.selected-wrong .option-letter {
-      color: inherit;
-    }
+    .option-btn:disabled { cursor: default; }
 
-    .next-area {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 0.8rem;
-    }
-    .next-btn {
-      background: #1f5f84;
-      color: white;
-      border: none;
-      padding: 1rem 2.5rem;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: 0.1s;
-      box-shadow: 0 10px 18px -6px #1f5f8480;
-      letter-spacing: 0.3px;
+    .option-letter {
+      background: #8b6fbf;
+      color: #fffdf5;
+      border: 2px solid #2b2b2b;
+      border-radius: 8px;
+      width: 30px;
+      height: 30px;
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
-    .next-btn:disabled {
-      background: #b0c8db;
-      box-shadow: none;
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-    .next-btn:hover:not(:disabled) {
-      background: #0e4160;
-      transform: scale(1.02);
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 900;
+      flex-shrink: 0;
+      box-shadow: 2px 2px 0 #2b2b2b;
     }
 
-    .result-screen {
-      background: white;
-      border-radius: 36px;
-      padding: 2.5rem 2rem 2rem;
-      text-align: center;
-      box-shadow: 0 20px 30px -10px rgba(0, 30, 60, 0.2);
-      border: 1px solid #ffffff;
+    /* Correct state */
+    .option-btn.selected-correct {
+      background: #c5f06b !important;
+      border-color: #2b2b2b !important;
+      box-shadow: 3px 3px 0 #7fa83f, 4px 4px 0 #2b2b2b !important;
+      animation: pop-correct 0.4s;
     }
-    .result-screen h2 {
-      font-size: 2rem;
-      color: #0b2f4b;
-      margin-bottom: 1rem;
+    .option-btn.selected-correct .option-letter {
+      background: #2b2b2b;
+      color: #c5f06b;
+    }
+    @keyframes pop-correct {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    /* Wrong state */
+    .option-btn.selected-wrong {
+      background: #ff7b7b !important;
+      border-color: #2b2b2b !important;
+      color: #fffdf5 !important;
+      box-shadow: 3px 3px 0 #b53a3a, 4px 4px 0 #2b2b2b !important;
+      animation: shake-wrong 0.4s;
+    }
+    .option-btn.selected-wrong .option-letter {
+      background: #2b2b2b;
+      color: #ff7b7b;
+    }
+    @keyframes shake-wrong {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    /* ===== FEEDBACK ===== */
+    .feedback-msg {
+      margin-top: 0.9rem;
+      font-size: 0.9rem;
+      font-weight: 900;
+      min-height: 1.3rem;
+      text-align: center;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ===== BOTTOM BUTTON ROW (like reference) ===== */
+    .bottom-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .square-btn {
+      background: #fff8e0;
+      border: 3px solid #2b2b2b;
+      border-radius: 14px;
+      width: 56px;
+      height: 56px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s;
+      box-shadow: 3px 3px 0 #a89a8a, 4px 4px 0 #2b2b2b;
+      color: #2b2b2b;
+    }
+    .square-btn:hover {
+      background: #fceb8a;
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 #a89a8a, 6px 6px 0 #2b2b2b;
+    }
+    .square-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 #a89a8a, 2px 2px 0 #2b2b2b;
+    }
+
+    .wide-btn {
+      background: #c5f06b;
+      border: 3px solid #2b2b2b;
+      border-radius: 14px;
+      padding: 0.9rem 2rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      color: #2b2b2b;
+      cursor: pointer;
+      transition: all 0.12s;
+      box-shadow: 3px 3px 0 #7fa83f, 4px 4px 0 #2b2b2b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      min-width: 160px;
+    }
+    .wide-btn:hover:not(:disabled) {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 #7fa83f, 6px 6px 0 #2b2b2b;
+    }
+    .wide-btn:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 #7fa83f, 2px 2px 0 #2b2b2b;
+    }
+    .wide-btn:disabled {
+      background: #d8d8d8;
+      color: #888;
+      box-shadow: 3px 3px 0 #999, 4px 4px 0 #2b2b2b;
+      cursor: not-allowed;
+    }
+
+    /* ===== RESULT SCREEN ===== */
+    .result-screen {
+      text-align: center;
+    }
+    .result-screen .info-panel {
+      background: #8b6fbf;
     }
     .big-score {
-      font-size: 4rem;
-      font-weight: 800;
-      color: #1f5f84;
-      line-height: 1.1;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #2b2b2b;
+      line-height: 1;
+      margin: 0.5rem 0;
+      text-shadow: 3px 3px 0 #c5f06b;
     }
     .score-message {
-      font-size: 1.3rem;
-      color: #285e83;
-      margin: 0.8rem 0 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #2b2b2b;
+      margin-bottom: 1rem;
+      line-height: 1.5;
     }
+
     .history-box {
-      background: #e4eff9;
-      padding: 1.2rem 1.5rem;
-      border-radius: 28px;
-      margin: 1.8rem 0 1.5rem;
+      background: #fff8e0;
+      border: 3px solid #2b2b2b;
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0 1.2rem;
       text-align: left;
+      box-shadow: 3px 3px 0 #a89a8a, 4px 4px 0 #2b2b2b;
+      max-height: 180px;
+      overflow-y: auto;
     }
     .history-box h3 {
-      font-size: 1.1rem;
-      color: #0e3d59;
-      margin-bottom: 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 900;
+      color: #2b2b2b;
+      margin-bottom: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     .history-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
     .history-item {
-      background: white;
-      border-radius: 50px;
-      padding: 0.4rem 1.2rem;
-      font-weight: 600;
-      color: #0a3146;
-      font-size: 0.95rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      border: 1px solid #b8d0e4;
+      background: #e0d0f5;
+      border: 2px solid #2b2b2b;
+      border-radius: 10px;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #2b2b2b;
+      box-shadow: 2px 2px 0 #2b2b2b;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .history-item span {
+      background: #2b2b2b;
+      color: #c5f06b;
+      padding: 0.1rem 0.4rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+    }
+
+    /* ===== PAUSE OVERLAY ===== */
+    .pause-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(43, 43, 43, 0.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 1rem;
+    }
+    .pause-overlay.active { display: flex; }
+
+    .pause-card {
+      background: #fffdf5;
+      border: 3px solid #2b2b2b;
+      border-radius: 24px;
+      padding: 1.8rem;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 8px 8px 0 #2b2b2b, 10px 10px 0 #a89a8a;
+      text-align: center;
+      position: relative;
+    }
+    .pause-card .close-btn {
+      top: 12px;
+      left: 16px;
+    }
+    .pause-card h2 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #2b2b2b;
+      margin-bottom: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .pause-card .info-panel {
+      margin-bottom: 1.4rem;
+    }
+
+    /* ===== BOTTOM DOCK (like reference bottom bar) ===== */
+    .dock {
+      margin-top: 1.5rem;
+      background: #fffdf5;
+      border: 3px solid #2b2b2b;
+      border-radius: 20px;
+      padding: 0.6rem 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      box-shadow: 5px 5px 0 #2b2b2b, 7px 7px 0 #a89a8a;
+      flex-wrap: wrap;
+    }
+    .dock-btn {
+      background: #fff8e0;
+      border: 3px solid #2b2b2b;
+      border-radius: 12px;
+      width: 48px;
+      height: 48px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s;
+      box-shadow: 3px 3px 0 #2b2b2b;
+      color: #2b2b2b;
+    }
+    .dock-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 #2b2b2b;
+      background: #fceb8a;
+    }
+    .dock-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 #2b2b2b;
+    }
+    .dock-btn.special {
+      background: #ff7b7b;
+    }
+    .dock-btn.purple {
+      background: #e0d0f5;
+    }
+    .dock-btn.green {
+      background: #c5f06b;
+    }
+    .dock-btn.yellow {
+      background: #fceb8a;
+    }
+    .dock-settings {
+      background: #ff7b7b;
+      border: 3px solid #2b2b2b;
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 900;
+      color: #2b2b2b;
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 3px 3px 0 #2b2b2b;
+      transition: all 0.12s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .history-item span {
-      font-weight: 800;
-      color: #1f5f84;
-    }
-    .start-new-btn {
-      background: #1f5f84;
-      color: white;
-      border: none;
-      padding: 1rem 2.8rem;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      margin-top: 0.8rem;
-      box-shadow: 0 10px 18px -6px #1f5f8480;
-      transition: 0.1s;
-    }
-    .start-new-btn:hover {
-      background: #0e4160;
-      transform: scale(1.02);
-    }
-    .hidden {
-      display: none !important;
-    }
-    .feedback-msg {
-      margin-top: 0.8rem;
-      font-weight: 600;
-      font-size: 0.98rem;
-      color: #1e6f9f;
+    .dock-settings:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 #2b2b2b;
     }
 
-    /* ===== IMAGE RAIN CONTAINER ===== */
+    /* ===== IMAGE RAIN ===== */
     #rainContainer {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       pointer-events: none;
       overflow: hidden;
-      z-index: 9999;
+      z-index: 99999;
     }
     .rain-image {
       position: absolute;
@@ -335,57 +567,137 @@
       width: 80px;
       height: 80px;
       object-fit: cover;
+      border: 3px solid #2b2b2b;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 4px 4px 0 #2b2b2b;
       animation: fall linear forwards;
-      opacity: 0.9;
     }
     @keyframes fall {
       0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.6; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.7; }
+    }
+
+    /* ===== HIDDEN ===== */
+    .hidden { display: none !important; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 600px) {
+      body { padding: 0.6rem; }
+      .game-card { padding: 1.2rem 1rem 1rem; border-radius: 20px; }
+      .game-title { font-size: 1.2rem; }
+      .info-panel { padding: 0.9rem 1rem; }
+      .info-panel .big { font-size: 0.9rem; }
+      .info-panel .small { font-size: 0.7rem; }
+      .hud-chip { font-size: 0.7rem; padding: 0.4rem 0.7rem; }
+      .hud-chip .val { font-size: 0.75rem; }
+      .q-text { font-size: 0.85rem; }
+      .option-btn { font-size: 0.8rem; padding: 0.7rem 0.8rem; }
+      .option-letter { width: 26px; height: 26px; font-size: 0.75rem; }
+      .wide-btn { padding: 0.75rem 1.4rem; font-size: 0.85rem; min-width: 130px; }
+      .square-btn { width: 48px; height: 48px; font-size: 1.2rem; }
+      .big-score { font-size: 2.5rem; }
+      .dock-btn { width: 42px; height: 42px; font-size: 1.1rem; }
+      .dock-settings { font-size: 0.7rem; padding: 0.4rem 0.7rem; }
+      .pause-card h2 { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
 <div id="rainContainer"></div>
 
-<div class="game-container" id="gameContainer">
-  <div class="top-bar">
-    <h1>⚡ Semiconductor MCQ</h1>
-    <div class="score-area">
-      <div class="score-badge">SCORE <span id="scoreDisplay">0</span></div>
-      <button class="reset-btn" id="resetBtn">⟲ New round</button>
+<!-- ===== PAUSE OVERLAY ===== -->
+<div class="pause-overlay" id="pauseOverlay">
+  <div class="pause-card">
+    <button class="close-btn" id="pauseCloseBtn">✕</button>
+    <h2>Pause</h2>
+    <div class="info-panel">
+      <div class="big">Have You Rested?</div>
+      <div class="small">Now You Can Continue!</div>
+    </div>
+    <div class="bottom-row">
+      <button class="square-btn" id="pauseHomeBtn" title="Home">🏠</button>
+      <button class="wide-btn" id="pauseContinueBtn">Continue</button>
+      <button class="square-btn" id="pauseRestartBtn" title="Restart">🔄</button>
     </div>
   </div>
+</div>
 
-  <div class="progress-info" id="progressInfo">
-    <div>Question <span id="currentQDisplay">1</span> / <span id="totalQDisplay">30</span></div>
-    <div>Round score: <span id="roundScoreDisplay">0</span></div>
-  </div>
+<!-- ===== MAIN GAME CARD ===== -->
+<div class="game-wrapper">
+  <div class="game-card" id="gameCard">
+    <button class="close-btn" id="mainCloseBtn" title="Pause">✕</button>
 
-  <div id="quizArea">
-    <div class="question-card">
-      <div class="q-text">
-        <span class="q-num-badge" id="qNumBadge">1</span>
-        <span id="questionText">Loading question...</span>
+    <div class="game-title">⚡ <span class="accent">SEMI</span> QUIZ ⚡</div>
+
+    <!-- QUIZ AREA -->
+    <div id="quizArea">
+      <!-- Info Panel -->
+      <div class="info-panel">
+        <div class="big" id="infoBig">Question 1 / 30</div>
+        <div class="small" id="infoSmall">Answer correctly to advance</div>
       </div>
-      <div class="options-list" id="optionsContainer"></div>
-      <div class="feedback-msg" id="feedbackMsg"></div>
-    </div>
-    <div class="next-area">
-      <button class="next-btn" id="nextBtn" disabled>Next ➔</button>
-    </div>
-  </div>
 
-  <div id="resultScreen" class="result-screen hidden">
-    <h2>🏁 Round complete</h2>
-    <div class="big-score" id="finalScore">0</div>
-    <div class="score-message" id="scoreMessage"></div>
-    <div class="history-box">
-      <h3>📋 Previous scores (local storage)</h3>
-      <div class="history-list" id="historyList"></div>
+      <!-- HUD -->
+      <div class="hud-row">
+        <div class="hud-chip green">SCORE <span class="val" id="scoreDisplay">0</span></div>
+        <div class="hud-chip yellow">STAGE <span class="val" id="stageDisplay">1</span></div>
+        <div class="hud-chip purple">ROUND <span class="val" id="roundScoreDisplay">0</span></div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBar"></div>
+      </div>
+
+      <!-- Question -->
+      <div class="question-card">
+        <div class="q-label">QUESTION</div>
+        <div class="q-text">
+          <span class="q-num" id="qNumBadge">01</span>
+          <span id="questionText">Loading question...</span>
+        </div>
+        <div class="options-list" id="optionsContainer"></div>
+        <div class="feedback-msg" id="feedbackMsg"></div>
+      </div>
+
+      <!-- Bottom Buttons -->
+      <div class="bottom-row">
+        <button class="square-btn" id="prevBtn" title="Previous" disabled>◀</button>
+        <button class="wide-btn" id="nextBtn" disabled>Next ▶</button>
+        <button class="square-btn" id="skipBtn" title="Skip">⏭</button>
+      </div>
     </div>
-    <button class="start-new-btn" id="startNewBtn">⟳ Play again (new 30)</button>
+
+    <!-- RESULT SCREEN -->
+    <div id="resultScreen" class="result-screen hidden">
+      <div class="info-panel">
+        <div class="big">ROUND COMPLETE</div>
+        <div class="small">Here is your score</div>
+      </div>
+
+      <div class="big-score" id="finalScore">0/30</div>
+      <div class="score-message" id="scoreMessage"></div>
+
+      <div class="history-box">
+        <h3>📋 High Scores (Local Storage)</h3>
+        <div class="history-list" id="historyList"></div>
+      </div>
+
+      <div class="bottom-row">
+        <button class="wide-btn" id="startNewBtn">🔄 Play Again</button>
+      </div>
+    </div>
+
+    <!-- Bottom Dock -->
+    <div class="dock">
+      <button class="dock-btn yellow" id="dockSound" title="Toggle Sound">🔊</button>
+      <button class="dock-btn green" id="dockHome" title="Home">🏠</button>
+      <button class="dock-btn purple" id="dockReset" title="Reset">🔄</button>
+      <button class="dock-btn special" id="dockPause" title="Pause">⏸</button>
+      <button class="dock-settings" id="dockSettings">
+        <span>⚙️</span> Settings
+      </button>
+    </div>
   </div>
 </div>
 
@@ -394,7 +706,6 @@
   // 300 QUESTION BANK (semiconductor manufacturing)
   // ============================================================
   const questionBank = [
-    // ========== SECTION 1: SILICON WAFER PRODUCTION (1-30) ==========
     { q: "What is the starting material for silicon wafer production?", options: ["Pure silicon dioxide powder", "Quartzite sand (SiO₂)", "Trichlorosilane gas", "Metallurgical-grade silicon"], correct: 1 },
     { q: "The carbothermic reduction of quartzite sand is carried out in an arc furnace at approximately what temperature?", options: ["900°C", "1200°C", "1900°C", "2500°C"], correct: 2 },
     { q: "What is the typical purity of metallurgical-grade silicon (MGS)?", options: ["90–95%", "98–99%", "99.9–99.99%", "99.999999%"], correct: 1 },
@@ -425,8 +736,6 @@
     { q: "Bevel edge rounding is performed to:", options: ["Increase wafer diameter", "Prevent edge chipping and photoresist buildup", "Improve crystal orientation", "Reduce oxygen content"], correct: 1 },
     { q: "The primary flat on a (100) p-type wafer indicates:", options: ["Crystal orientation and conductivity type", "Wafer diameter", "Resistivity", "Oxygen content"], correct: 0 },
     { q: "Which wafer size is currently the mainstream for VLSI/ULSI manufacturing?", options: ["100 mm", "150 mm", "200 mm", "300 mm"], correct: 3 },
-
-    // ========== SECTION 2: THERMAL OXIDATION & DEAL-GROVE (31-70) ==========
     { q: "In the Deal–Grove model, the general governing equation for oxide growth is:", options: ["x₀² + Ax₀ = B(t + τ)", "x₀ = Bt + A", "x₀² = A(t + τ)", "x₀ = √(Bt) + A"], correct: 0 },
     { q: "In the Deal–Grove equation, what does the term 'τ' (tau) represent?", options: ["Oxidation time", "A time offset accounting for initial oxide present", "Temperature coefficient", "Diffusion coefficient"], correct: 1 },
     { q: "For the oxidation of silicon, the thickness of silicon consumed (t_Si) relative to the oxide grown (x_ox) is:", options: ["t_Si = 0.44 × x_ox", "t_Si = 2.27 × x_ox", "t_Si = x_ox", "t_Si = 1.0 × x_ox"], correct: 0 },
@@ -468,8 +777,6 @@
     { q: "The density of thermal SiO₂ is approximately:", options: ["1.0 g/cm³", "2.2 g/cm³", "3.5 g/cm³", "5.0 g/cm³"], correct: 1 },
     { q: "The dielectric constant of SiO₂ is approximately:", options: ["1.0", "3.9", "7.5", "25"], correct: 1 },
     { q: "Which of the following is NOT an advantage of dry oxidation?", options: ["High density", "High dielectric breakdown", "Fast growth rate", "Low interface trap density"], correct: 2 },
-
-    // ========== SECTION 3: DOPING - DIFFUSION & ION IMPLANTATION (71-110) ==========
     { q: "Thermal diffusion doping is typically performed at which temperature range?", options: ["200–400°C", "500–700°C", "900–1200°C", "1500–1800°C"], correct: 2 },
     { q: "Which law governs thermal diffusion?", options: ["Fick's laws", "Ohm's law", "Newton's law", "Poisson's equation"], correct: 0 },
     { q: "In a predeposition diffusion step, the surface concentration is:", options: ["Zero", "Constant (solid solubility limit)", "Exponentially decreasing", "Linearly increasing"], correct: 1 },
@@ -510,8 +817,6 @@
     { q: "Which dopant diffuses slowest in silicon?", options: ["Boron", "Phosphorus", "Arsenic", "Antimony"], correct: 3 },
     { q: "The diffusion mechanism for substitutional dopants in silicon is:", options: ["Interstitial", "Vacancy-assisted", "Interstitialcy", "All of the above"], correct: 3 },
     { q: "The diffusion mechanism for interstitial dopants in silicon is:", options: ["Direct interstitial", "Vacancy-assisted", "Interstitialcy", "Kick-out"], correct: 0 },
-
-    // ========== SECTION 4: PHOTOLITHOGRAPHY (111-150) ==========
     { q: "What is the correct order of the 8-step lithography sequence?", options: ["Dehydration → Spin coat → Soft bake → Exposure → PEB → Develop → Hard bake → Etch/strip", "Spin coat → Dehydration → Exposure → Develop → Hard bake → Etch", "Dehydration → Exposure → Spin coat → Develop → Hard bake → Etch", "Spin coat → Soft bake → Dehydration → Exposure → Develop → Etch"], correct: 0 },
     { q: "What is the purpose of HMDS in photolithography?", options: ["To remove organics", "To promote photoresist adhesion", "To develop the resist", "To etch the substrate"], correct: 1 },
     { q: "Positive photoresist becomes soluble in the developer when exposed to:", options: ["Heat", "UV light", "Plasma", "Chemical solvent"], correct: 1 },
@@ -552,8 +857,6 @@
     { q: "EUV masks are:", options: ["Transmissive", "Reflective", "Absorptive", "Transparent"], correct: 1 },
     { q: "The source for EUV lithography is:", options: ["Excimer laser", "Mercury lamp", "Laser-produced plasma", "LED"], correct: 2 },
     { q: "The typical exposure dose for EUV lithography is:", options: ["1 mJ/cm²", "10 mJ/cm²", "100 mJ/cm²", "1000 mJ/cm²"], correct: 1 },
-
-    // ========== SECTION 5: ETCHING (151-180) ==========
     { q: "In etching, selectivity is defined as:", options: ["Etch rate of film / etch rate of mask", "Etch rate of mask / etch rate of film", "Etch rate vertical / etch rate lateral", "Etch rate lateral / etch rate vertical"], correct: 0 },
     { q: "Anisotropy (A_f) = 1 means:", options: ["Pure isotropic etching", "Pure anisotropic etching (vertical sidewalls)", "No etching", "Infinite selectivity"], correct: 1 },
     { q: "Which wet etchant is used for SiO₂?", options: ["KOH", "BOE (HF + NH₄F)", "H₃PO₄", "HNA"], correct: 1 },
@@ -584,8 +887,6 @@
     { q: "The etch stop layer for silicon etching is often:", options: ["SiO₂", "Si₃N₄", "SiGe", "All of the above"], correct: 3 },
     { q: "The selectivity of silicon to SiO₂ in SF₆ plasma is typically:", options: ["1:1", "10:1", "100:1", "1000:1"], correct: 1 },
     { q: "The selectivity of silicon to photoresist in plasma etching is typically:", options: ["1:1", "5:1", "10:1", "50:1"], correct: 1 },
-
-    // ========== SECTION 6: THIN FILM DEPOSITION (181-210) ==========
     { q: "Which deposition technique is purely physical (line-of-sight)?", options: ["LPCVD", "PECVD", "Sputtering", "ALD"], correct: 2 },
     { q: "Which CVD technique operates at the lowest temperature?", options: ["LPCVD (500–900°C)", "PECVD (200–400°C)", "APCVD (1000°C)", "Thermal oxidation"], correct: 1 },
     { q: "ALD (Atomic Layer Deposition) is characterized by:", options: ["High deposition rate", "Self-limiting half-reactions", "Poor conformality", "Low purity"], correct: 1 },
@@ -616,8 +917,6 @@
     { q: "The dielectric constant of silicon nitride is approximately:", options: ["3.9", "7.5", "10", "25"], correct: 1 },
     { q: "The deposition rate of LPCVD polysilicon at 620°C is approximately:", options: ["1 nm/min", "10 nm/min", "100 nm/min", "1000 nm/min"], correct: 1 },
     { q: "The typical thickness of gate polysilicon is:", options: ["10 nm", "50 nm", "200–500 nm", "1000 nm"], correct: 2 },
-
-    // ========== SECTION 7: METROLOGY (211-230) ==========
     { q: "The four-point probe is used to measure:", options: ["Film thickness", "Sheet resistance", "Refractive index", "Junction depth"], correct: 1 },
     { q: "In four-point probe measurement, the outer probes supply:", options: ["Voltage", "Current", "Resistance", "Capacitance"], correct: 1 },
     { q: "Ellipsometry measures:", options: ["Sheet resistance", "Film thickness and refractive index", "Dopant concentration", "Defect density"], correct: 1 },
@@ -638,8 +937,6 @@
     { q: "The depth resolution of SIMS is typically:", options: ["1 μm", "10 nm", "1–5 nm", "100 nm"], correct: 2 },
     { q: "The spot size of SIMS is typically:", options: ["1 mm", "100 μm", "10–50 μm", "1 nm"], correct: 2 },
     { q: "The four-point probe probe spacing is typically:", options: ["0.1 mm", "1 mm", "10 mm", "100 mm"], correct: 1 },
-
-    // ========== SECTION 8: CMOS FABRICATION (231-270) ==========
     { q: "In a CMOS inverter, the pMOS transistor acts as:", options: ["Pull-down", "Pull-up", "Pass gate", "Capacitor"], correct: 1 },
     { q: "An SRAM cell typically uses how many transistors?", options: ["1", "2", "4", "6"], correct: 3 },
     { q: "A DRAM cell consists of:", options: ["6 transistors", "1 transistor + 1 capacitor", "2 transistors + 1 capacitor", "4 transistors"], correct: 1 },
@@ -680,8 +977,6 @@
     { q: "The ideal subthreshold swing at room temperature is:", options: ["10 mV/decade", "60 mV/decade", "100 mV/decade", "200 mV/decade"], correct: 1 },
     { q: "The DIBL effect stands for:", options: ["Drain-Induced Barrier Lowering", "Dielectric-Induced Barrier Lowering", "Dopant-Induced Barrier Lowering", "Defect-Induced Barrier Lowering"], correct: 0 },
     { q: "The DIBL effect is more pronounced in:", options: ["Long channel devices", "Short channel devices", "Wide devices", "Narrow devices"], correct: 1 },
-
-    // ========== SECTION 9: PACKAGING (271-300) ==========
     { q: "Which packaging method offers the highest pin count?", options: ["Wire bonding", "TAB", "Flip-chip (C4)", "Through-hole"], correct: 2 },
     { q: "Wire bonding typically uses which materials?", options: ["Gold or aluminum", "Copper only", "Silver only", "Tungsten"], correct: 0 },
     { q: "Flip-chip requires what to mitigate CTE mismatch stress?", options: ["Underfill epoxy", "Solder mask", "Heat sink", "Conformal coating"], correct: 0 },
@@ -742,57 +1037,75 @@
     'https://i.pinimg.com/1200x/9b/03/24/9b03243049014c545e395c32a25c2e59.jpg',
     'https://i.pinimg.com/736x/a2/80/33/a28033f417048f918f94cb1838324133.jpg'
   ];
-
   const CORRECT_IMAGES = [
     'https://i.pinimg.com/736x/eb/27/ba/eb27ba47295e2807ab4cea298833b4dc.jpg',
     'https://i.pinimg.com/736x/e4/91/d9/e491d9f382ac777b8176087054ddc776.jpg'
   ];
 
   // ============================================================
-  // IMAGE RAIN FUNCTION
+  // SOUND ENGINE
+  // ============================================================
+  let audioCtx = null;
+  let soundEnabled = true;
+
+  function initAudio() {
+    if (audioCtx) return;
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+  }
+  function playTone(freq, dur, type = 'square', vol = 0.07, delay = 0) {
+    if (!soundEnabled || !audioCtx) return;
+    const t = audioCtx.currentTime + delay;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, t);
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(vol, t + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(t); osc.stop(t + dur);
+  }
+  function playCorrectSound() {
+    playTone(523.25, 0.1, 'square', 0.08, 0);
+    playTone(659.25, 0.1, 'square', 0.08, 0.09);
+    playTone(783.99, 0.18, 'square', 0.08, 0.18);
+    playTone(1046.5, 0.22, 'square', 0.09, 0.28);
+  }
+  function playWrongSound() {
+    playTone(220, 0.13, 'sawtooth', 0.09, 0);
+    playTone(185, 0.13, 'sawtooth', 0.09, 0.11);
+    playTone(155, 0.22, 'sawtooth', 0.09, 0.22);
+    playTone(110, 0.35, 'sawtooth', 0.1, 0.36);
+  }
+  function playClickSound() { playTone(800, 0.03, 'square', 0.04); }
+  function playVictorySound() {
+    const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5, 1318.5];
+    notes.forEach((n, i) => playTone(n, 0.15, 'square', 0.07, i * 0.11));
+  }
+  function playGameOverSound() {
+    [392, 349.23, 311.13, 261.63].forEach((n, i) => playTone(n, 0.28, 'sawtooth', 0.08, i * 0.22));
+  }
+
+  // ============================================================
+  // IMAGE RAIN
   // ============================================================
   function triggerImageRain(isCorrect) {
     const rainContainer = document.getElementById('rainContainer');
     const imageUrls = isCorrect ? CORRECT_IMAGES : WRONG_IMAGES;
-
-    // Clear any existing rain first
     rainContainer.innerHTML = '';
-
-    const totalImages = 25; // number of images to rain
-    const duration = 3000;  // 3 seconds
-
-    for (let i = 0; i < totalImages; i++) {
+    for (let i = 0; i < 25; i++) {
       const img = document.createElement('img');
       img.src = imageUrls[i % imageUrls.length];
       img.className = 'rain-image';
-
-      // random horizontal position
-      const leftPos = Math.random() * 100;
-      img.style.left = leftPos + '%';
-
-      // random size between 60 and 120 px
-      const size = 60 + Math.random() * 60;
+      img.style.left = (Math.random() * 100) + '%';
+      const size = 50 + Math.random() * 70;
       img.style.width = size + 'px';
       img.style.height = size + 'px';
-
-      // random animation duration between 2 and 3 seconds
-      const animDuration = 2 + Math.random() * 1.2;
-      img.style.animationDuration = animDuration + 's';
-
-      // random delay between 0 and 0.8 seconds
-      const delay = Math.random() * 0.8;
-      img.style.animationDelay = delay + 's';
-
-      // random initial rotation
-      img.style.transform = `rotate(${Math.random() * 360}deg)`;
-
+      img.style.animationDuration = (2 + Math.random() * 1.2) + 's';
+      img.style.animationDelay = (Math.random() * 0.7) + 's';
       rainContainer.appendChild(img);
     }
-
-    // Clean up after 3 seconds
-    setTimeout(() => {
-      rainContainer.innerHTML = '';
-    }, duration);
+    setTimeout(() => { rainContainer.innerHTML = ''; }, 3000);
   }
 
   // ============================================================
@@ -803,29 +1116,30 @@
   let currentIndex = 0;
   let roundScore = 0;
   let answered = false;
-  let selectedOptionIndex = null;
 
-  // DOM elements
+  // DOM refs
   const quizArea = document.getElementById('quizArea');
   const resultScreen = document.getElementById('resultScreen');
   const questionText = document.getElementById('questionText');
   const optionsContainer = document.getElementById('optionsContainer');
   const qNumBadge = document.getElementById('qNumBadge');
-  const currentQDisplay = document.getElementById('currentQDisplay');
-  const totalQDisplay = document.getElementById('totalQDisplay');
+  const infoBig = document.getElementById('infoBig');
+  const infoSmall = document.getElementById('infoSmall');
+  const stageDisplay = document.getElementById('stageDisplay');
   const roundScoreDisplay = document.getElementById('roundScoreDisplay');
   const scoreDisplay = document.getElementById('scoreDisplay');
   const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const skipBtn = document.getElementById('skipBtn');
   const feedbackMsg = document.getElementById('feedbackMsg');
   const finalScore = document.getElementById('finalScore');
   const scoreMessage = document.getElementById('scoreMessage');
   const historyList = document.getElementById('historyList');
-  const resetBtn = document.getElementById('resetBtn');
   const startNewBtn = document.getElementById('startNewBtn');
+  const progressBar = document.getElementById('progressBar');
+  const pauseOverlay = document.getElementById('pauseOverlay');
 
-  // --------------------------------------------------------------
-  // HELPER: shuffle array (Fisher-Yates)
-  // --------------------------------------------------------------
+  // Helpers
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -834,69 +1148,66 @@
     return arr;
   }
 
-  // --------------------------------------------------------------
-  // LOCAL STORAGE – history of scores
-  // --------------------------------------------------------------
+  // Local storage
   function getScoreHistory() {
-    const stored = localStorage.getItem('semiQuizScores');
-    return stored ? JSON.parse(stored) : [];
+    const s = localStorage.getItem('semiQuizScoresCard');
+    return s ? JSON.parse(s) : [];
   }
-
   function saveScoreToHistory(score) {
     const history = getScoreHistory();
     const date = new Date().toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     history.push({ score, date });
-    if (history.length > 12) history.shift();
-    localStorage.setItem('semiQuizScores', JSON.stringify(history));
+    if (history.length > 10) history.shift();
+    localStorage.setItem('semiQuizScoresCard', JSON.stringify(history));
     renderHistory();
   }
-
   function renderHistory() {
     const history = getScoreHistory();
     if (!historyList) return;
     if (history.length === 0) {
-      historyList.innerHTML = '<div class="history-item" style="opacity:0.7;">No scores yet</div>';
+      historyList.innerHTML = '<div class="history-item" style="opacity:0.6;">No scores yet</div>';
       return;
     }
-    historyList.innerHTML = history.map(entry =>
-      `<div class="history-item">📅 ${entry.date} → <span>${entry.score}/30</span></div>`
+    historyList.innerHTML = history.map(e =>
+      `<div class="history-item">${e.date} <span>${e.score}/30</span></div>`
     ).join('');
   }
 
-  // --------------------------------------------------------------
-  // START A NEW ROUND (30 random questions)
-  // --------------------------------------------------------------
+  // Start round
   function startNewRound() {
-    const shuffledBank = shuffleArray([...questionBank]);
-    currentRoundQuestions = shuffledBank.slice(0, QUESTIONS_PER_ROUND);
+    initAudio();
+    const shuffled = shuffleArray([...questionBank]);
+    currentRoundQuestions = shuffled.slice(0, QUESTIONS_PER_ROUND);
     currentIndex = 0;
     roundScore = 0;
     answered = false;
-    selectedOptionIndex = null;
-
-    totalQDisplay.textContent = QUESTIONS_PER_ROUND;
+    stageDisplay.textContent = '1';
     roundScoreDisplay.textContent = '0';
     scoreDisplay.textContent = '0';
     quizArea.classList.remove('hidden');
     resultScreen.classList.add('hidden');
-
+    updateProgress();
     renderQuestion();
   }
 
-  // --------------------------------------------------------------
-  // RENDER CURRENT QUESTION
-  // --------------------------------------------------------------
+  function updateProgress() {
+    const pct = Math.round((currentIndex / QUESTIONS_PER_ROUND) * 100);
+    progressBar.style.width = pct + '%';
+  }
+
+  // Render question
   function renderQuestion() {
     const q = currentRoundQuestions[currentIndex];
     if (!q) return;
-
     answered = false;
-    selectedOptionIndex = null;
     nextBtn.disabled = true;
+    prevBtn.disabled = currentIndex === 0;
     feedbackMsg.textContent = '';
 
-    qNumBadge.textContent = currentIndex + 1;
-    currentQDisplay.textContent = currentIndex + 1;
+    qNumBadge.textContent = String(currentIndex + 1).padStart(2, '0');
+    infoBig.textContent = `Question ${currentIndex + 1} / ${QUESTIONS_PER_ROUND}`;
+    infoSmall.textContent = 'Pick the correct answer';
+    stageDisplay.textContent = currentIndex + 1;
     questionText.textContent = q.q;
 
     optionsContainer.innerHTML = '';
@@ -904,53 +1215,50 @@
     q.options.forEach((opt, idx) => {
       const btn = document.createElement('button');
       btn.className = 'option-btn';
-      btn.innerHTML = `<span class="option-letter">${letters[idx]}</span> ${opt}`;
+      btn.innerHTML = `<span class="option-letter">${letters[idx]}</span><span>${opt}</span>`;
       btn.dataset.optionIndex = idx;
       btn.addEventListener('click', () => handleOptionClick(idx, btn));
       optionsContainer.appendChild(btn);
     });
+    updateProgress();
   }
 
-  // --------------------------------------------------------------
-  // HANDLE OPTION CLICK
-  // --------------------------------------------------------------
+  // Handle option click
   function handleOptionClick(optIdx, btnElement) {
     if (answered) return;
-
     const q = currentRoundQuestions[currentIndex];
     const isCorrect = (optIdx === q.correct);
     answered = true;
-    selectedOptionIndex = optIdx;
 
-    document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
-
+    document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
     const allBtns = document.querySelectorAll('.option-btn');
+
     if (isCorrect) {
       btnElement.classList.add('selected-correct');
       roundScore += 1;
-      feedbackMsg.textContent = '✅ Correct!';
-      feedbackMsg.style.color = '#1e8b4c';
+      feedbackMsg.textContent = '✓ CORRECT! +1';
+      feedbackMsg.style.color = '#4a8a2f';
+      playCorrectSound();
     } else {
       btnElement.classList.add('selected-wrong');
-      feedbackMsg.textContent = `❌ Wrong. The correct answer was ${String.fromCharCode(65 + q.correct)}.`;
-      feedbackMsg.style.color = '#b33';
+      feedbackMsg.textContent = `✗ WRONG! ANSWER: ${String.fromCharCode(65 + q.correct)}`;
+      feedbackMsg.style.color = '#b53a3a';
       allBtns[q.correct].classList.add('selected-correct');
+      playWrongSound();
     }
 
-    // 🔥 TRIGGER IMAGE RAIN
     triggerImageRain(isCorrect);
-
     roundScoreDisplay.textContent = roundScore;
     scoreDisplay.textContent = roundScore;
     nextBtn.disabled = false;
+    infoSmall.textContent = isCorrect ? 'Correct!' : 'Better luck next time!';
+    updateProgress();
   }
 
-  // --------------------------------------------------------------
-  // NEXT QUESTION / FINISH ROUND
-  // --------------------------------------------------------------
+  // Next
   function goToNext() {
     if (!answered) return;
-
+    playClickSound();
     if (currentIndex + 1 < QUESTIONS_PER_ROUND) {
       currentIndex++;
       renderQuestion();
@@ -959,52 +1267,103 @@
     }
   }
 
-  // --------------------------------------------------------------
-  // FINISH ROUND
-  // --------------------------------------------------------------
+  // Prev (just navigate back visually — does not allow re-answering)
+  function goToPrev() {
+    if (currentIndex > 0) {
+      playClickSound();
+      currentIndex--;
+      renderQuestion();
+      // Show previous answer state (already answered, so show feedback)
+      const q = currentRoundQuestions[currentIndex];
+      const allBtns = document.querySelectorAll('.option-btn');
+      allBtns.forEach(b => b.disabled = true);
+      // We don't know which was selected — just highlight the correct one
+      allBtns[q.correct].classList.add('selected-correct');
+      nextBtn.disabled = false;
+      answered = true;
+      feedbackMsg.textContent = `Review: correct answer is ${String.fromCharCode(65 + q.correct)}`;
+      feedbackMsg.style.color = '#8b6fbf';
+    }
+  }
+
+  // Skip
+  function skipQuestion() {
+    if (answered) {
+      goToNext();
+      return;
+    }
+    playClickSound();
+    // Count as wrong and move on
+    const q = currentRoundQuestions[currentIndex];
+    const allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.disabled = true);
+    allBtns[q.correct].classList.add('selected-correct');
+    feedbackMsg.textContent = `Skipped! Answer: ${String.fromCharCode(65 + q.correct)}`;
+    feedbackMsg.style.color = '#b53a3a';
+    playWrongSound();
+    triggerImageRain(false);
+    answered = true;
+    nextBtn.disabled = false;
+    updateProgress();
+  }
+
+  // Finish round
   function finishRound() {
     saveScoreToHistory(roundScore);
-
     quizArea.classList.add('hidden');
     resultScreen.classList.remove('hidden');
-
-    finalScore.textContent = `${roundScore} / ${QUESTIONS_PER_ROUND}`;
-    const percentage = Math.round((roundScore / QUESTIONS_PER_ROUND) * 100);
-
+    finalScore.textContent = `${roundScore}/${QUESTIONS_PER_ROUND}`;
+    const pct = Math.round((roundScore / QUESTIONS_PER_ROUND) * 100);
     let msg = '';
-    if (percentage >= 90) msg = '🏆 Outstanding! You are exam ready.';
-    else if (percentage >= 70) msg = '👍 Good job! A little more revision.';
-    else if (percentage >= 50) msg = '📘 Not bad, but review the tricky topics.';
-    else msg = '📚 Keep studying — you will get there!';
-    scoreMessage.textContent = `${percentage}% · ${msg}`;
-
+    if (pct >= 90) { msg = '🏆 LEGENDARY! You are exam ready.'; playVictorySound(); }
+    else if (pct >= 70) { msg = '👍 Great job! Almost there.'; playVictorySound(); }
+    else if (pct >= 50) { msg = '📘 Not bad. Review the tricky ones.'; playGameOverSound(); }
+    else { msg = '📚 Keep grinding — you got this!'; playGameOverSound(); }
+    scoreMessage.textContent = `${pct}% · ${msg}`;
     renderHistory();
   }
 
-  // --------------------------------------------------------------
-  // RESET / NEW ROUND
-  // --------------------------------------------------------------
-  function resetGame() {
-    startNewRound();
+  // Pause
+  function togglePause() {
+    playClickSound();
+    pauseOverlay.classList.toggle('active');
   }
+  function closePause() { playClickSound(); pauseOverlay.classList.remove('active'); }
 
-  // --------------------------------------------------------------
+  // ============================================================
   // EVENT LISTENERS
-  // --------------------------------------------------------------
+  // ============================================================
   nextBtn.addEventListener('click', goToNext);
-  resetBtn.addEventListener('click', resetGame);
-  startNewBtn.addEventListener('click', () => startNewRound());
+  prevBtn.addEventListener('click', goToPrev);
+  skipBtn.addEventListener('click', skipQuestion);
+  startNewBtn.addEventListener('click', () => { playClickSound(); startNewRound(); });
+  document.getElementById('mainCloseBtn').addEventListener('click', togglePause);
+  document.getElementById('pauseCloseBtn').addEventListener('click', closePause);
+  document.getElementById('pauseContinueBtn').addEventListener('click', closePause);
+  document.getElementById('pauseRestartBtn').addEventListener('click', () => { closePause(); startNewRound(); });
+  document.getElementById('pauseHomeBtn').addEventListener('click', () => { closePause(); startNewRound(); });
+  document.getElementById('dockPause').addEventListener('click', togglePause);
+  document.getElementById('dockReset').addEventListener('click', () => { playClickSound(); startNewRound(); });
+  document.getElementById('dockHome').addEventListener('click', () => { playClickSound(); startNewRound(); });
+  document.getElementById('dockSettings').addEventListener('click', () => { playClickSound(); togglePause(); });
+  document.getElementById('dockSound').addEventListener('click', function() {
+    soundEnabled = !soundEnabled;
+    this.textContent = soundEnabled ? '🔊' : '🔇';
+    if (soundEnabled) playClickSound();
+  });
 
-  // --------------------------------------------------------------
-  // INITIALIZE
-  // --------------------------------------------------------------
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') togglePause();
+    if (e.key === 'Enter' && !nextBtn.disabled) goToNext();
+  });
+
+  // Init
   function initGame() {
     renderHistory();
     startNewRound();
   }
-
   initGame();
-  totalQDisplay.textContent = QUESTIONS_PER_ROUND;
 </script>
 </body>
 </html>
